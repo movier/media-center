@@ -9,8 +9,8 @@ class CustomBase:
 
 Base = declarative_base(cls=CustomBase)
 
-class User(Base):
+class Video(Base):
     id = Column(Integer, primary_key=True, index=True)
-    email = Column(String, unique=True, index=True)
-    hashed_password = Column(String)
-    is_active = Column(Boolean(), default=True)
+    title = Column(String, unique=True, index=True)
+    uri = Column(String)
+    poster_uri = Column(String)

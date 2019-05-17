@@ -1,5 +1,5 @@
 from sqlalchemy import create_engine
-from models import Base, User
+from models import Base, Video
 from sqlalchemy.orm import sessionmaker
 from db import engine, SessionLocal
 
@@ -7,10 +7,10 @@ Base.metadata.create_all(bind=engine)
 
 db_session = SessionLocal()
 
-first_user = db_session.query(User).first()
-if not first_user:
-    u = User(email="bbbbbbb@example.com", hashed_password="notreallyhashed")
-    db_session.add(u)
+first_video = db_session.query(Video).first()
+if not first_video:
+    v = Video(title="sample-video", uri="folder/sample-video.mp4", poster_uri="folder/sample-video.jpg")
+    db_session.add(v)
     db_session.commit()
 
 db_session.close()

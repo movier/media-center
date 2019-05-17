@@ -2,12 +2,12 @@ from fastapi import Depends, FastAPI
 from sqlalchemy.orm import Session
 from starlette.requests import Request
 from starlette.responses import Response
-from models import User
+from models import Video 
 from db import SessionLocal
 
 # Utility
-def get_user(db_session: Session, user_id: int):
-    return db_session.query(User).filter(User.id == user_id).first()
+def get_video(db_session: Session, video_id: int):
+    return db_session.query(Video).filter(Video.id == video_id).first()
 
 # Dependency
 def get_db(request: Request):
@@ -15,10 +15,10 @@ def get_db(request: Request):
 
 app = FastAPI()
 
-@app.get("/users/{user_id}")
-def read_user(user_id: int, db: Session = Depends(get_db)):
-    user = get_user(db, user_id=user_id)
-    return user
+@app.get("/videos/{video_id}")
+def read_video(video_id: int, db: Session = Depends(get_db)):
+    video = get_video(db, video_id=video_id)
+    return video
 
 
 @app.middleware("http")
