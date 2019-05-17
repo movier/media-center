@@ -1,44 +1,9 @@
 from fastapi import Depends, FastAPI
-from sqlalchemy import Boolean, Column, Integer, String, create_engine
-from sqlalchemy.ext.declarative import declarative_base, declared_attr
-from sqlalchemy.orm import Session, sessionmaker
+from sqlalchemy.orm import Session
 from starlette.requests import Request
 from starlette.responses import Response
-
-# SQLAlchemy specific code, as with any other app
-SQLALCHEMY_DATABASE_URI = "sqlite:///./test.db"
-# SQLALCHEMY_DATABASE_URI = "postgresql://user:password@postgresserver/db"
-
-engine = create_engine(
-    SQLALCHEMY_DATABASE_URI, connect_args={"check_same_thread": False}
-)
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-
-class CustomBase:
-    # Generate __tablename__ automatically
-    @declared_attr
-    def __tablename__(cls):
-        return cls.__name__.lower()
-
-Base = declarative_base(cls=CustomBase)
-
-class User(Base):
-    id = Column(Integer, primary_key=True, index=True)
-    email = Column(String, unique=True, index=True)
-    hashed_password = Column(String)
-    is_active = Column(Boolean(), default=True)
-
-Base.metadata.create_all(bind=engine)
-
-db_session = SessionLocal()
-
-first_user = db_session.query(User).first()
-if not first_user:
-    u = User(email="johndoe@example.com", hashed_password="notreallyhashed")
-    db_session.add(u)
-    db_session.commit()
-
-db_session.close()
+from models import User
+from db import SessionLocal
 
 # Utility
 def get_user(db_session: Session, user_id: int):
