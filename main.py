@@ -15,6 +15,10 @@ def get_db(request: Request):
 
 app = FastAPI()
 
+@app.get("/videos/")
+def read_videos(db: Session = Depends(get_db)):
+    return db.query(Video).all()
+
 @app.get("/videos/{video_id}")
 def read_video(video_id: int, db: Session = Depends(get_db)):
     video = get_video(db, video_id=video_id)
