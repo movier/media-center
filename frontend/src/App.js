@@ -12,7 +12,7 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    fetch('/api').then(data => this.setState({ data }));
+    fetch('/api').then(response => this.setState({ data: response.json() }));
   }
 
   render() {
