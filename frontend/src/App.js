@@ -3,22 +3,26 @@ import './App.css';
 
 class App extends React.Component {
 
+  constructor(props) {
+    super(props);
+    
+    this.state = {
+      data: [],
+    };
+  }
+
   componentDidMount() {
-    fetch('/api');
+    fetch('/api').then(data => this.setState({ data }));
   }
 
   render() {
-    const data = [];
-    for (let index = 0; index < 103; index++) {
-      data.push(index);
-    }
     return (
       <div className="App">
-        {data.map((value, index) => {
+        {this.state.data.map((value, index) => {
           return (
             <div key={index}>
-              <img src="/images/placeholder.png" alt={index} />
-              <p>This is description of the image</p>
+              <img src={value.poster_uri} alt={value.title} />
+              <p>{value.title}</p>
             </div>
           );
         })}
