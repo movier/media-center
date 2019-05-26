@@ -26,8 +26,10 @@ class App extends React.Component {
         {this.state.data.map((value, index) => {
           return (
             <div key={index}>
-              <img src={value.poster_uri} alt={value.title} />
-              <p>{value.title}</p>
+              <a href={value.uri}>
+                <img src={value.poster_uri} alt={value.title} />
+                <p>{value.title}</p>
+              </a>
             </div>
           );
         })}
