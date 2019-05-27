@@ -1,6 +1,6 @@
 FROM python:3
 
-WORKDIR /usr/src/app
+WORKDIR /mnt/sda4/jffs/my-video-app/flask
 
 COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
