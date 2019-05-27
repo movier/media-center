@@ -1,3 +1,13 @@
+# Run the backend
+```
+docker-compose up
+```
+
+## Access backend container
+```
+docker exec -it my-running-flask-app bash
+```
+# Others
 ```
 server {
     listen 80;

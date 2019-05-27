@@ -1,0 +1,9 @@
+version: "3.7"
+services:
+  backend:
+    build: ./flask
+    container_name: my-running-flask-app
+    ports:
+      - "8003:5000"
+    volumes:
+      - "./flask:/mnt/sda4/jffs/my-video-app/flask"
