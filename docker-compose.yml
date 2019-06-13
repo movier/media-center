@@ -14,3 +14,10 @@ services:
       - "3003:3000"
     volumes:
       - "./frontend:/usr/src/app"
+  nginx: 
+    image: nginx:latest
+    container_name: production_nginx
+    volumes:
+      - "./nginx.conf:/etc/nginx/nginx.conf"
+    ports:
+      - "80:80"
