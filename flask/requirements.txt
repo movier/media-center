@@ -1,6 +1,7 @@
 aniso8601==6.0.0
 Click==7.0
 Flask==1.0.3
+Flask-Cors==3.0.8
 Flask-RESTful==0.3.7
 flup==1.0.3
 itsdangerous==1.1.0

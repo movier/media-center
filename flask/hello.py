@@ -2,8 +2,10 @@ from flask import Flask
 from flask_restful import Resource, Api, fields, marshal_with
 from database import db_session
 from models import Video
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 api = Api(app)
 
 resource_fields = {
