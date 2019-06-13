@@ -7,3 +7,10 @@ services:
       - "8003:5000"
     volumes:
       - "./flask:/mnt/sda4/jffs/my-video-app/flask"
+  frontend:
+    build: ./frontend
+    container_name: my-running-react-app
+    ports:
+      - "3003:3000"
+    volumes:
+      - "./frontend:/usr/src/app"
