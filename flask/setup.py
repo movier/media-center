@@ -1,8 +1,9 @@
 from sqlalchemy import create_engine
 from models import Video
 from os import listdir
-from os.path import isfile, join, splitext
+from os.path import isfile, join, splitext, getmtime
 from database import init_db, db_session
+from datetime import datetime
 
 init_db()
 
@@ -18,7 +19,9 @@ def traverse_dir(base_path):
                 uri = path[len(mypath):]
                 root, ext1 = splitext(uri)
                 poster_uri = "".join(root) + ".jpg"
-                v = Video(title=title, uri=uri, poster_uri=poster_uri)
+                mtimestamp = getmtime(path)
+                mdatetime = datetime.fromtimestamp(mtimestamp)
+                v = Video(title=title, uri=uri, poster_uri=poster_uri, mtime=mdatetime)
                 db_session.add(v)
         else:
             traverse_dir(path)

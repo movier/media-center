@@ -1,5 +1,6 @@
 from os import listdir
-from os.path import isfile, join, splitext
+from os.path import isfile, join, splitext, getmtime
+from datetime import datetime
 
 mypath = "/mnt/sda4/data/AI"
 
@@ -13,7 +14,9 @@ def traverse_dir(base_path):
                 uri = path[len(mypath):]
                 root, ext1 = splitext(uri)
                 poster_uri = "".join(root) + ".jpg"
-                print(dict(title=title, uri=uri, poster_uri=poster_uri))
+                mtimestamp = getmtime(path)
+                mdatetime = datetime.fromtimestamp(mtimestamp).isoformat()
+                print(dict(title=title, uri=uri, poster_uri=poster_uri, mtime=mdatetime))
         else:
             traverse_dir(path)
 

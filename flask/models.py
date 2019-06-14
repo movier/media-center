@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, DateTime
 from database import Base
 
 class User(Base):
@@ -20,3 +20,4 @@ class Video(Base):
   title = Column(String, index=True)
   uri = Column(String)
   poster_uri = Column(String)
+  mtime = Column(DateTime, index=True)
