@@ -41,5 +41,24 @@ chmod +x /mnt/sda4/jffs/my-video-app/flask/my-video-app-api.fcgi
 /mnt/sda4/jffs/my-video-app/flask/my-video-app-api.fcgi &
 ```
 
+# Backend update in production environment
+1. if use `screen`
+```
+screen -list
+screen -r [session]
+ctrl + c
+/mnt/sda4/jffs/my-video-app/flask/my-video-app-api.fcgi
+ctrl a + d
+```
+
+2. else 
+```
+ps | grep python
+kill pid
+screen
+/mnt/sda4/jffs/my-video-app/flask/my-video-app-api.fcgi
+ctrl a + d
+```
+
 # Troubleshooting
 1. If you got a 404 and find permission denied in error log, please make sure that the user of nginx and that of the fcgi file should be the same.
