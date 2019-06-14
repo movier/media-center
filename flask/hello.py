@@ -3,6 +3,7 @@ from flask_restful import Resource, Api, fields, marshal_with
 from database import db_session
 from models import Video
 from flask_cors import CORS
+from sqlalchemy import desc
 
 app = Flask(__name__)
 CORS(app)
@@ -19,7 +20,7 @@ resource_fields = {
 class HelloWorld(Resource):
   @marshal_with(resource_fields)
   def get(self):
-    return Video.query.all()
+    return Video.query.order_by(desc(Video.mtime)).all()
 
 api.add_resource(HelloWorld, '/')
 
