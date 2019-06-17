@@ -1,5 +1,6 @@
 import React from 'react';
 import './App.css';
+import { Link } from "react-router-dom";
 
 class App extends React.Component {
 
@@ -26,10 +27,10 @@ class App extends React.Component {
         {this.state.data.map((value, index) => {
           return (
             <div key={index}>
-              <a href={value.uri}>
+              <Link to={`/watch?v=${value.uri}`}>
                 <img src={value.poster_uri} alt={value.title} />
                 <p>{value.title}</p>
-              </a>
+              </Link>
             </div>
           );
         })}
