@@ -15,6 +15,7 @@ services:
       - "3003:3000"
     volumes:
       - "./frontend:/usr/src/app"
+      - /usr/src/app/node_modules
   nginx: 
     image: nginx:latest
     container_name: production_nginx
@@ -23,3 +24,6 @@ services:
       - "./static:/mnt/sda4/data/AI"
     ports:
       - "80:80"
+    depends_on:
+      - backend
+      - frontend
