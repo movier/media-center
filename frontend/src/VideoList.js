@@ -19,6 +19,11 @@ class App extends React.Component {
         console.log('response', data);
         this.setState({ data });
       });
+    fetch('/api?is_check=true')
+      .then(response => response.json())
+      .then(data => {
+        this.setState({ data });
+      });
   }
 
   render() {
