@@ -7,6 +7,10 @@ docker-compose up
 ```
 docker exec -it my-running-flask-app bash
 ```
+## Access frontend container
+```
+docker exec -it my-running-react-app bash
+```
 # Others
 ```
 server {
