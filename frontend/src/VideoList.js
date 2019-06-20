@@ -1,8 +1,8 @@
 import React from 'react';
-import './App.css';
+import './VideoList.css';
 import { Link } from "react-router-dom";
 
-class App extends React.Component {
+class VideoList extends React.Component {
 
   constructor(props) {
     super(props);
@@ -28,13 +28,13 @@ class App extends React.Component {
 
   render() {
     return (
-      <div className="App">
+      <div className="VideoList">
         {this.state.data.map((value, index) => {
           return (
             <div key={index}>
-              <Link to={`/watch?v=${value.uri}`}>
+              <Link className="VideoList__link" to={`/watch?v=${value.uri}`}>
                 <img src={value.poster_uri} alt={value.title} />
-                <p>{value.title}</p>
+                <p className="VideoList__title">{value.title}</p>
               </Link>
             </div>
           );
@@ -44,4 +44,4 @@ class App extends React.Component {
   }
 }
 
-export default App;
+export default VideoList;
