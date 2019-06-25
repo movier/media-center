@@ -20,7 +20,7 @@ resource_fields = {
   'mtime': fields.DateTime(dt_format='iso8601')
 }
 
-mypath = "/mnt/sda4/data/AI"
+mypath = "/mnt/sda4/data/AI" # Todo: should be dynamic
 
 def traverse_dir(base_path):
   for f in listdir(base_path):

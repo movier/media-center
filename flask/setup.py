@@ -2,12 +2,12 @@ from sqlalchemy import create_engine
 from models import Video
 from os import listdir
 from os.path import isfile, join, splitext, getmtime
-from database import init_db, db_session
+from database import init_db, db_session2
 from datetime import datetime
 
 init_db()
 
-mypath = "/mnt/sda4/data/AI"
+mypath = "/mnt/sda4/data/kids" # dynamic
 
 def traverse_dir(base_path):
     for f in listdir(base_path):
@@ -22,11 +22,11 @@ def traverse_dir(base_path):
                 mtimestamp = getmtime(path)
                 mdatetime = datetime.fromtimestamp(mtimestamp)
                 v = Video(title=title, uri=uri, poster_uri=poster_uri, mtime=mdatetime)
-                db_session.add(v)
+                db_session2.add(v)
         else:
             traverse_dir(path)
 
 traverse_dir(mypath)
-db_session.commit()
+db_session2.commit()
 
 # db_session.close()
