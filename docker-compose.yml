@@ -21,7 +21,7 @@ services:
     container_name: production_nginx
     volumes:
       - "./nginx.conf:/etc/nginx/nginx.conf"
-      - "./static:/mnt/sda4/data/AI"
+      - "./static/adults:/mnt/sda4/data/AI"
     ports:
       - "80:80"
     depends_on:
