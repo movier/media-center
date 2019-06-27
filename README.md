@@ -1,8 +1,13 @@
+# Todo
+1. test adding video with check parameter
+2. static file path should also be dynamic
+3. refactor codes related to dynamic database and file path
+4. is a way better than referrer to check, such as base prefix of api request
+
 # Run the backend
 ```
 docker-compose up
 ```
-
 ## Access backend container
 ```
 docker exec -it my-running-flask-app bash
