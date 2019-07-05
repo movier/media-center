@@ -23,8 +23,6 @@ resource_fields = {
   'mtime': fields.DateTime(dt_format='iso8601')
 }
 
-mypath = "/mnt/sda4/data/AI" # Todo: should be dynamic
-
 def get_db_session():
   if request.referrer == 'http://localhost:81/':
     print("Hello world")
@@ -39,7 +37,10 @@ def get_db_session():
                                          bind=engine))
   return db_session
 
-# db_session = get_db_session()
+def get_static_path():
+  if request.referrer == 'http://localhost:81/':
+    return "/mnt/sda4/data/kids"
+  return "/mnt/sda4/data/AI"
 
 def traverse_dir(base_path):
   for f in listdir(base_path):
@@ -48,16 +49,16 @@ def traverse_dir(base_path):
       title, ext = splitext(f)
       if ext == ".mp4" and not f.startswith("._"):
         title = "".join(title)
-        uri = path[len(mypath):]
+        uri = path[len(base_path):]
         root, ext1 = splitext(uri)
         poster_uri = "".join(root) + ".jpg"
         mtimestamp = getmtime(path)
         mdatetime = datetime.fromtimestamp(mtimestamp)
-        query_existing_video = Video.query.filter(Video.title == title).count()
+        query_existing_video = g.db.query(Video).filter(Video.title == title).count()
         if query_existing_video == 0:
           v = Video(title=title, uri=uri,
             poster_uri=poster_uri, mtime=mdatetime)
-          # db_session.add(v)
+          g.db.add(v)
     else:
       traverse_dir(path)
 
@@ -65,13 +66,12 @@ class HelloWorld(Resource):
   @marshal_with(resource_fields)
   def get(self):
     print(request.referrer)
-    # db_session = get_db_session()
     parser = reqparse.RequestParser()
     parser.add_argument('is_check', type=bool)
     args = parser.parse_args()
     if args['is_check']:
-      traverse_dir(mypath)
-      # db_session.commit()
+      traverse_dir(g.path)
+      g.db.commit()
     return g.db.query(Video).order_by(desc(Video.mtime)).all()
 
 api.add_resource(HelloWorld, '/')
@@ -81,6 +81,8 @@ def open_db_session():
   print("before request", request.referrer)
   if 'db' not in g:
     g.db = get_db_session()
+  if 'path' not in g:
+    g.path = get_static_path()
 
 @app.teardown_appcontext
 def shutdown_session(exception=None):
