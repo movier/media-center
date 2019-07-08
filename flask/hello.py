@@ -23,9 +23,14 @@ resource_fields = {
   'mtime': fields.DateTime(dt_format='iso8601')
 }
 
+def is_kids_video(url):
+  if not url:
+    return False
+  x = url.split(":")
+  return len(x) > 2 and x[2] == "81/"
+
 def get_db_session():
-  if request.referrer == 'http://localhost:81/':
-    print("Hello world")
+  if is_kids_video(request.referrer):
     engine2 = create_engine('sqlite:////mnt/sda4/jffs/my-video-app/flask/kids.db', convert_unicode=True)
     db_session2 = scoped_session(sessionmaker(autocommit=False,
                                          autoflush=False,
@@ -38,7 +43,7 @@ def get_db_session():
   return db_session
 
 def get_static_path():
-  if request.referrer == 'http://localhost:81/':
+  if is_kids_video(request.referrer):
     return "/mnt/sda4/data/kids"
   return "/mnt/sda4/data/AI"
 
