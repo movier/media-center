@@ -25,8 +25,8 @@ services:
       - "./static/adults:/mnt/sda4/data/AI"
       - "./static/kids:/mnt/sda4/data/kids"
     ports:
-      - "80:80"
-      - "81:81"
+      - "9000:9000"
+      - "9001:9001"
     depends_on:
       - backend
       - frontend
