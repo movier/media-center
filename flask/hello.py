@@ -28,7 +28,7 @@ def is_kids_video(url):
   if not url:
     return False
   x = url.split(":")
-  return len(x) > 2 and x[2] == "9001/"
+  return len(x) > 2 and x[2].startswith("9001/")
 
 def get_db_session():
   if is_kids_video(request.referrer):
