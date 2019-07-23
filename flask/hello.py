@@ -1,11 +1,12 @@
 from flask import Flask, request, g
-from flask_restful import Resource, Api, fields, marshal_with, reqparse
+from flask_restful import Resource, Api, fields, marshal_with, reqparse, abort
 # from database import db_session, db_session2
 from models import Video
 from flask_cors import CORS
 from sqlalchemy import desc
 from os import listdir
 from os.path import isfile, join, splitext, getmtime
+import os
 from datetime import datetime
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
@@ -79,6 +80,30 @@ class HelloWorld(Resource):
       g.db.commit()
     return g.db.query(Video).order_by(desc(Video.mtime)).all()
 
+def abort_if_video_doesnt_exist(video_id):
+  video = g.db.query(Video).get(video_id)
+  if not video:
+    abort(404, message="Video {} doesn't exist".format(video_id))
+  return video
+
+def remove_file(path):
+  if os.path.exists(path):
+    os.remove(path)
+  else:
+    print('The file does not exist')
+
+class VideoController(Resource):
+  def delete(self, video_id):
+    video = abort_if_video_doesnt_exist(video_id)
+    poster_file_path = g.path + video.poster_uri
+    remove_file(poster_file_path)
+    video_file_path = g.path + video.uri
+    remove_file(video_file_path)
+    g.db.delete(video)
+    g.db.commit()
+    return '', 204
+
+api.add_resource(VideoController, '/videos/<video_id>')
 api.add_resource(HelloWorld, '/')
 
 @app.before_request
