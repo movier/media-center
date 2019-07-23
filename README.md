@@ -1,6 +1,6 @@
 Two types of vides for this project, therefore:
 * there are two static paths for each of them
-* there are two domains for each of them
+* there are two frontend ports for each of them (the ports are used to distinguish database and static file path)
 * take these two types into account when designing or developing new features
 
 # Run the project 
