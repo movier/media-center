@@ -37,11 +37,12 @@ class VideoList extends React.Component {
         </div>
         <div className="VideoList">
           {this.state.data.map((value, index) => {
+            const { uri, poster_uri, title, id } = value;
             return (
               <div key={index}>
-                <Link className="VideoList__link" to={`/watch?v=${value.uri}`}>
-                  <img src={value.poster_uri} alt={value.title} />
-                  <p className="VideoList__title">{value.title}</p>
+                <Link className="VideoList__link" to={`/watch?v=${uri}&id=${id}`}>
+                  <img src={poster_uri} alt={title} />
+                  <p className="VideoList__title">{title}</p>
                 </Link>
               </div>
             );
