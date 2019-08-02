@@ -1,7 +1,8 @@
+from datetime import datetime
 from flask import Flask, request, g
 from flask_restful import Resource, Api, fields, marshal_with, reqparse, abort
 # from database import db_session, db_session2
-from models import Video
+from models import Video, Shot
 from flask_cors import CORS
 from sqlalchemy import desc
 from os import listdir
@@ -68,9 +69,17 @@ def traverse_dir(base_path):
     else:
       traverse_dir(path)
 
+def check_last_shot_date():
+  last_shot = g.db.query(Shot).order_by(Shot.id.desc()).first()
+  now = datetime.now()
+  difference = now - last_shot.created_date
+  if difference.days < 7:
+    abort(403)
+
 class HelloWorld(Resource):
   @marshal_with(resource_fields)
   def get(self):
+    check_last_shot_date()
     print(request.referrer)
     parser = reqparse.RequestParser()
     parser.add_argument('is_check', type=bool)
@@ -103,7 +112,14 @@ class VideoController(Resource):
     g.db.commit()
     return '', 204
 
+class ShotList(Resource):
+  def post(self):
+    g.db.add(Shot())
+    g.db.commit()
+    return '', 201
+
 api.add_resource(VideoController, '/videos/<video_id>')
+api.add_resource(ShotList, '/shots')
 api.add_resource(HelloWorld, '/')
 
 @app.before_request
