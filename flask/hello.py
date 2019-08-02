@@ -71,6 +71,7 @@ def traverse_dir(base_path):
 
 def check_last_shot_date():
   last_shot = g.db.query(Shot).order_by(Shot.id.desc()).first()
+  if not last_shot: return
   now = datetime.now()
   difference = now - last_shot.created_date
   if difference.days < 7:
