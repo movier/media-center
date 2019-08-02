@@ -32,6 +32,14 @@ class VideoDetail extends React.Component {
     }
   }
 
+  handleShotButtonClicked = () => {
+    fetch('/api/shots', {
+      method: 'POST'
+    }).then(() => {
+      this.props.history.goBack()
+    });
+  }
+
   render() {
     const searchParams = new URLSearchParams(this.props.location.search);
     return (
@@ -40,6 +48,7 @@ class VideoDetail extends React.Component {
           <source src={searchParams.get('v')} />
         </video>
         <button onClick={this.handleDeleteButtonClicked}>Delete</button>
+        <button onClick={this.handleShotButtonClicked}>Shot</button>
       </>
     );
   }
