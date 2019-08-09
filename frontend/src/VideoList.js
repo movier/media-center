@@ -17,7 +17,13 @@ class VideoList extends React.Component {
       .then(response => response.json())
       .then(data => { 
         console.log('response', data);
-        this.setState({ data });
+        if (data.has_error && data.error_code === 403) {
+          console.log('error', data.error_message);
+          const { remaining_seconds: remainingSeconds } = data.data;
+          this.props.history.replace('/remaining-time', { remainingSeconds });
+        } else {
+          this.setState({ data });
+        }
       });
   }
 

@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import VideoList from './VideoList';
 import VideoDetail from './VideoDetail';
+import RemainingTime from './RemainingTime';
 
 function BasicExample() {
   return (
@@ -10,6 +11,7 @@ function BasicExample() {
         <Route exact path="/" component={VideoList} />
         <Route path="/watch" component={VideoDetail} />
         <Route path="/topics" component={Topics} />
+        <Route path="/remaining-time" component={RemainingTime} />
       </div>
     </Router>
   );
