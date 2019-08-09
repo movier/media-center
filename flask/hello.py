@@ -1,6 +1,6 @@
 from datetime import datetime
 from flask import Flask, request, g
-from flask_restful import Resource, Api, fields, marshal_with, reqparse, abort
+from flask_restful import Resource, Api, fields, reqparse, abort, marshal
 # from database import db_session, db_session2
 from models import Video, Shot
 from flask_cors import CORS
@@ -12,6 +12,7 @@ from datetime import datetime
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
+from math import floor
 
 app = Flask(__name__)
 CORS(app)
@@ -73,14 +74,19 @@ def check_last_shot_date():
   last_shot = g.db.query(Shot).order_by(Shot.id.desc()).first()
   if not last_shot: return
   now = datetime.now()
-  difference = now - last_shot.created_date
-  if difference.days < 7:
-    abort(403)
+  return now - last_shot.created_date
 
 class HelloWorld(Resource):
-  @marshal_with(resource_fields)
   def get(self):
-    check_last_shot_date()
+    difference = check_last_shot_date()
+    if difference and difference.days < 7:
+      remaining_seconds = 7 * 24 * 60 * 60 - floor(difference.total_seconds())
+      return {
+        'has_error': True,
+        'error_code': 403,
+        'error_message': 'It is less than 7 days since last time you shot. ',
+        'data': {'remaining_seconds': remaining_seconds}
+      }
     print(request.referrer)
     parser = reqparse.RequestParser()
     parser.add_argument('is_check', type=bool)
@@ -88,7 +94,7 @@ class HelloWorld(Resource):
     if args['is_check']:
       traverse_dir(g.path)
       g.db.commit()
-    return g.db.query(Video).order_by(desc(Video.mtime)).all()
+    return marshal(g.db.query(Video).order_by(desc(Video.mtime)).all(), resource_fields), 200
 
 def abort_if_video_doesnt_exist(video_id):
   video = g.db.query(Video).get(video_id)
