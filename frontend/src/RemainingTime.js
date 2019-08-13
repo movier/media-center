@@ -14,7 +14,11 @@ class RemainingTime extends React.Component {
 
   componentDidMount() {
     setInterval(() => {
-      this.setState({ remainingSeconds: this.state.remainingSeconds - 1 })
+      if (this.state.remainingSeconds === 0) {
+        this.props.history.replace('/');
+      } else {
+        this.setState({ remainingSeconds: this.state.remainingSeconds - 1 });
+      }
     }, 1000);
   }
 
