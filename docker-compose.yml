@@ -10,12 +10,12 @@ services:
       - "./static/adults:/mnt/sda4/data/AI"
       - "./static/kids:/mnt/sda4/data/kids"
   frontend:
-    build: ./frontend
+    build: ./react
     container_name: my-running-react-app
     ports:
       - "3003:3000"
     volumes:
-      - "./frontend:/usr/src/app"
+      - "./react:/usr/src/app"
       - /usr/src/app/node_modules
   nginx: 
     image: nginx:latest
