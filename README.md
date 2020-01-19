@@ -1,4 +1,4 @@
-Two types of vides for this project, therefore:
+Two types of videos for this project, therefore:
 * there are two static paths for each of them
 * there are two frontend ports for each of them (the ports are used to distinguish database and static file path)
 * take these two types into account when designing or developing new features
@@ -7,6 +7,8 @@ Two types of vides for this project, therefore:
 ```
 docker-compose up
 ```
+open http://localhost:9000 and http://localhost:9001 to visit these two websites
+
 ## Access backend container
 ```
 docker exec -it my-running-flask-app bash
