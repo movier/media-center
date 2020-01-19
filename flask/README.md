@@ -1,10 +1,4 @@
-# Build
-`docker build -t my-flask-app .`
-
-# Run
-`docker run -it --rm --name my-running-flask-app -p 8003:5000 -v $(pwd):/mnt/sda4/jffs/my-video-app/flask my-flask-app`
-
-http://localhost:8003/
+After installing new dependency through `pip3 install`, run `pip3 freeze > requirements.txt` to export dependencies
 
 # Get into command line of the running container
 `docker exec -it my-running-flask-app bash`
