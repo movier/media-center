@@ -1,10 +1,10 @@
-from new_db import db, Video
+from manage import db, Video
 from os import listdir
 from os.path import isfile, join, splitext, getmtime
 from datetime import datetime
 
-mypath = "/mnt/sda4/data/kids"
-# mypath = "/mnt/sda4/data/AI"
+# mypath = "/mnt/sda4/data/kids"
+mypath = "/mnt/sda4/data/AI"
 
 
 def traverse_dir(base_path):
