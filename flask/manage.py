@@ -13,6 +13,11 @@ migrate = Migrate(app, db)
 manager = Manager(app)
 manager.add_command('db', MigrateCommand)
 
+video_cast_table = db.Table('video_cast', db.Model.metadata,
+  db.Column('video_id', db.Integer, db.ForeignKey('videos.id')),
+  db.Column('cast_id', db.Integer, db.ForeignKey('cast.id'))
+)
+
 class Video(db.Model):
   __tablename__ = 'videos'
   id = db.Column(db.Integer, primary_key=True, index=True)
@@ -20,6 +25,19 @@ class Video(db.Model):
   uri = db.Column(db.String)
   poster_uri = db.Column(db.String)
   mtime = db.Column(db.DateTime, index=True)
+  cast = db.relationship(
+    'Cast',
+    secondary=video_cast_table,
+    back_populates="videos")
+
+class Cast(db.Model):
+  __tablename__ = 'cast'
+  id = db.Column(db.Integer, primary_key=True, index=True)
+  name = db.Column(db.String, index=True)
+  videos = db.relationship(
+    'Video',
+    secondary=video_cast_table,
+    back_populates="cast")
 
 class Shot(db.Model):
   __tablename__ = 'shots'
