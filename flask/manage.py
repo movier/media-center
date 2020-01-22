@@ -33,7 +33,7 @@ class Video(db.Model):
 class Cast(db.Model):
   __tablename__ = 'cast'
   id = db.Column(db.Integer, primary_key=True, index=True)
-  name = db.Column(db.String, index=True)
+  name = db.Column(db.String, index=True, unique=True)
   videos = db.relationship(
     'Video',
     secondary=video_cast_table,
