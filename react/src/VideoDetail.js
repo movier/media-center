@@ -10,17 +10,9 @@ class VideoDetail extends React.Component {
     const searchParams = new URLSearchParams(props.location.search);
     this.state = {
       cast: searchParams.get('cast').split(','),
+      newCast: '',
     };
   }
-
-  // componentDidMount() {
-  //   fetch('/api')
-  //     .then(response => response.json())
-  //     .then(data => { 
-  //       console.log('response', data);
-  //       this.setState({ data });
-  //     });
-  // }
 
   handleDeleteButtonClicked = () => {
     if (window.confirm("Are you sure to delete this video?")) { 
@@ -42,6 +34,22 @@ class VideoDetail extends React.Component {
     });
   }
 
+  handleAddCastButtonClick = () => {
+    if (!this.state.newCast) return;
+    const searchParams = new URLSearchParams(this.props.location.search);
+    const id = searchParams.get('id');
+    const data = { cast_name: this.state.newCast };
+    fetch(`/api/videos/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    }).then(() => {
+      this.setState({ cast: this.state.cast.concat(this.state.newCast), newCast: '' });
+    })
+  }
+
   render() {
     const searchParams = new URLSearchParams(this.props.location.search);
     return (
@@ -52,6 +60,11 @@ class VideoDetail extends React.Component {
         <button onClick={this.handleDeleteButtonClicked}>Delete</button>
         <button onClick={this.handleShotButtonClicked}>Shot</button>
         <div>{this.state.cast.map((m, i) => <span style={{ marginRight: 10 }} key={i}>{m}</span>)}</div>
+        <div>
+          <span>New Cast:</span>
+          <input type="text" value={this.state.newCast} onChange={e => this.setState({ newCast: e.target.value })} />
+          <button onClick={this.handleAddCastButtonClick}>Add Cast</button>
+        </div>
       </>
     );
   }
