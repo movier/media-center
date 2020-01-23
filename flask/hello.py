@@ -2,7 +2,7 @@ from datetime import datetime
 from flask import Flask, request, g
 from flask_restful import Resource, Api, fields, reqparse, abort, marshal
 # from database import db_session, db_session2
-from models import Video, Shot
+from manage import Video, Shot
 from flask_cors import CORS
 from sqlalchemy import desc
 from os import listdir
@@ -18,12 +18,17 @@ app = Flask(__name__)
 CORS(app)
 api = Api(app)
 
+cast_fields = {
+  'id': fields.Integer,
+  'name': fields.String,
+}
 resource_fields = {
   'id': fields.Integer,
   'title': fields.String,
   'uri': fields.String,
   'poster_uri': fields.String,
-  'mtime': fields.DateTime(dt_format='iso8601')
+  'mtime': fields.DateTime(dt_format='iso8601'),
+  'cast': fields.List(fields.Nested(cast_fields)),
 }
 
 def is_kids_video(url):
@@ -94,7 +99,8 @@ class HelloWorld(Resource):
     if args['is_check']:
       traverse_dir(g.path)
       g.db.commit()
-    return marshal(g.db.query(Video).order_by(desc(Video.mtime)).all(), resource_fields), 200
+    result = g.db.query(Video).order_by(desc(Video.mtime)).all()
+    return marshal(result, resource_fields), 200
 
 def abort_if_video_doesnt_exist(video_id):
   video = g.db.query(Video).get(video_id)
