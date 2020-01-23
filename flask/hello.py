@@ -134,7 +134,14 @@ class VideoController(Resource):
     parser = reqparse.RequestParser()
     parser.add_argument('cast_name')
     args = parser.parse_args()
-    c = Cast(name=args['cast_name'])
+    cast_name = args['cast_name']
+    query_cast = g.db.query(Cast).filter_by(name=cast_name)
+
+    if query_cast.count() > 0:
+      c = query_cast.first()
+    else:
+      c = Cast(name=cast_name)
+
     v = g.db.query(Video).get(video_id)
     v.cast.append(c)
     g.db.add(v)
