@@ -30,6 +30,11 @@ resource_fields = {
   'mtime': fields.DateTime(dt_format='iso8601'),
   'cast': fields.List(fields.Nested(cast_fields)),
 }
+cast_fields_res = {
+  'id': fields.Integer,
+  'name': fields.String,
+  'videos': fields.List(fields.Nested(resource_fields))
+}
 
 def is_kids_video(url):
   if not url:
@@ -142,8 +147,14 @@ class ShotList(Resource):
     g.db.commit()
     return '', 201
 
+class CastController(Resource):
+  def get(self):
+    result = g.db.query(Cast).all()
+    return marshal(result, cast_fields_res), 200
+
 api.add_resource(VideoController, '/videos/<video_id>')
 api.add_resource(ShotList, '/shots')
+api.add_resource(CastController, '/cast')
 api.add_resource(HelloWorld, '/')
 
 @app.before_request
