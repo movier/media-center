@@ -2,7 +2,7 @@ from datetime import datetime
 from flask import Flask, request, g
 from flask_restful import Resource, Api, fields, reqparse, abort, marshal
 # from database import db_session, db_session2
-from manage import Video, Shot
+from manage import Video, Shot, Cast
 from flask_cors import CORS
 from sqlalchemy import desc
 from os import listdir
@@ -124,6 +124,17 @@ class VideoController(Resource):
     g.db.delete(video)
     g.db.commit()
     return '', 204
+  
+  def put(self, video_id):
+    parser = reqparse.RequestParser()
+    parser.add_argument('cast_name')
+    args = parser.parse_args()
+    c = Cast(name=args['cast_name'])
+    v = g.db.query(Video).get(video_id)
+    v.cast.append(c)
+    g.db.add(v)
+    g.db.commit()
+    return True, 200
 
 class ShotList(Resource):
   def post(self):
