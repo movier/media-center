@@ -8,7 +8,9 @@ class VideoDetail extends React.Component {
 
     console.log('dd', props.location.search);
     const searchParams = new URLSearchParams(props.location.search);
-    console.log('video detail', searchParams.get('v'));
+    this.state = {
+      cast: searchParams.get('cast').split(','),
+    };
   }
 
   // componentDidMount() {
@@ -49,6 +51,7 @@ class VideoDetail extends React.Component {
         </video>
         <button onClick={this.handleDeleteButtonClicked}>Delete</button>
         <button onClick={this.handleShotButtonClicked}>Shot</button>
+        <div>{this.state.cast.map((m, i) => <span style={{ marginRight: 10 }} key={i}>{m}</span>)}</div>
       </>
     );
   }
