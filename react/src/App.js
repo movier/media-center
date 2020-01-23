@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import VideoList from './VideoList';
 import VideoDetail from './VideoDetail';
 import RemainingTime from './RemainingTime';
+import CastList from './CastList';
 
 function BasicExample() {
   return (
@@ -12,6 +13,7 @@ function BasicExample() {
         <Route path="/watch" component={VideoDetail} />
         <Route path="/topics" component={Topics} />
         <Route path="/remaining-time" component={RemainingTime} />
+        <Route path="/cast" component={CastList} />
       </div>
     </Router>
   );
