@@ -40,6 +40,7 @@ class VideoList extends React.Component {
       <div>
         <div style={{ marginTop: 16, textAlign: 'center' }}>
           <button onClick={this.handleCheckUpdate}>检查更新</button>
+          <Link to="/cast">Cast</Link>
         </div>
         <div className="VideoList">
           {this.state.data.map((value, index) => {
