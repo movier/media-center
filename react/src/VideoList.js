@@ -6,14 +6,20 @@ class VideoList extends React.Component {
 
   constructor(props) {
     super(props);
-    
+  
+    let initialData = [];
+    const data = localStorage.getItem('data');
+    if (data) {
+      initialData = JSON.parse(data);
+    }
     this.state = {
-      data: [],
-      test: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+      data: initialData,
+      test: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
     };
   }
 
   componentDidMount() {
+    if (this.state.data.length > 0) return;
     fetch('/api')
       .then(response => response.json())
       .then(data => { 
@@ -23,6 +29,7 @@ class VideoList extends React.Component {
           const { remaining_seconds: remainingSeconds } = data.data;
           this.props.history.replace('/remaining-time', { remainingSeconds });
         } else {
+          localStorage.setItem('data', JSON.stringify(data));
           this.setState({ data });
         }
       });
@@ -32,6 +39,7 @@ class VideoList extends React.Component {
     fetch('/api?is_check=true')
       .then(response => response.json())
       .then(data => {
+        localStorage.setItem('data', JSON.stringify(data));
         this.setState({ data });
       });
   }
@@ -56,11 +64,11 @@ class VideoList extends React.Component {
               </div>
             );
           })}
-          {this.state.test.map(value => (
+          {/* {this.state.test.map(value => (
             <div key={value} style={{ width: '100%', height: 100, backgroundColor: 'cyan' }}>
               <Link className="VideoList__link" to={'/watch?v=/sample5.mp4&id=2&cast=Test2,TTTTT'}>List {value}</Link>
             </div>
-          ))}
+          ))} */}
         </div>
       </div>
     );
