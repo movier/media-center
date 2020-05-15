@@ -6,16 +6,24 @@ class CastList extends React.Component {
 
   constructor(props) {
     super(props);
-    
+   
+    let initialData = [];
+    const data = localStorage.getItem('cast_data');
+    if (data) {
+      initialData = JSON.parse(data);
+    }
+
     this.state = {
-      data: [],
+      data: initialData,
     };
   }
 
   componentDidMount() {
+    if (this.state.data.length > 0) return;
     fetch('/api/cast')
       .then(response => response.json())
-      .then(data => { 
+      .then(data => {
+        localStorage.setItem('cast_data', JSON.stringify(data));
         this.setState({ data });
       });
   }
