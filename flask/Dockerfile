@@ -1,5 +1,8 @@
 FROM python:3
 
+RUN apt update
+RUN apt install -y ffmpeg
+
 WORKDIR /mnt/sda4/jffs/my-video-app/flask
 
 COPY requirements.txt ./
