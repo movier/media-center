@@ -16,5 +16,5 @@ def crop(start,end,input,output):
 	str = "ffmpeg -i " + input + " -ss  " + start + " -to " + end + " -c copy " + output
 	runBash(str)
 
-crop("00:00:00","00:00:04","sample.mp4","output.mp4")
+crop("00:00:00","00:00:04","/mnt/sda4/data/AI/sample.mp4","/mnt/sda4/data/AI/output.mp4")
 print('Done!')
