@@ -159,6 +159,25 @@ class CastController(Resource):
     result = g.db.query(Cast).all()
     return marshal(result, cast_fields_res), 200
 
+class FFmpegController(Resource):
+  def post(self):
+    parser = reqparse.RequestParser()
+    parser.add_argument('input')
+    parser.add_argument('output')
+    parser.add_argument('start')
+    parser.add_argument('end')
+    args = parser.parse_args()
+    input = args['input']
+    output = args['output']
+    start = args['start']
+    end = args['end']
+    input_file_path = g.path + input
+    output_file_path = g.path + output
+    command = "ffmpeg -i " + input_file_path + " -ss  " + start + " -to " + end + " -c copy " + output_file_path
+    os.system(command)
+    return '', 201
+
+api.add_resource(FFmpegController, '/ffmpeg')
 api.add_resource(VideoController, '/videos/<video_id>')
 api.add_resource(ShotList, '/shots')
 api.add_resource(CastController, '/cast')
