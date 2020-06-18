@@ -13,6 +13,7 @@ class VideoDetail extends React.Component {
       newCast: '',
       start: '',
       end: '',
+      status: '',
     };
   }
 
@@ -54,6 +55,7 @@ class VideoDetail extends React.Component {
 
   handleConfirmButtonClick = () => {
     if (!this.state.start || !this.state.end) return;
+    this.setState({ status: 'Loading...' });
     const searchParams = new URLSearchParams(this.props.location.search);
     const input = searchParams.get('v');
     const [name, suffix]= input.split('.');
@@ -72,6 +74,7 @@ class VideoDetail extends React.Component {
       body: JSON.stringify(data),
     }).then(() => {
       console.log('done');
+      this.setState({ status: 'Done' });
     });
   }
 
@@ -96,6 +99,7 @@ class VideoDetail extends React.Component {
           <span>End:</span>
           <input type="text" value={this.state.end} onChange={e => this.setState({ end: e.target.value })} />
           <button onClick={this.handleConfirmButtonClick}>Confirm</button>
+          <span>{this.state.status}</span>
         </div>
       </>
     );
