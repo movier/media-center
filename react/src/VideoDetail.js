@@ -11,6 +11,8 @@ class VideoDetail extends React.Component {
     this.state = {
       cast: searchParams.get('cast').split(','),
       newCast: '',
+      start: '',
+      end: '',
     };
   }
 
@@ -50,6 +52,29 @@ class VideoDetail extends React.Component {
     })
   }
 
+  handleConfirmButtonClick = () => {
+    if (!this.state.start || !this.state.end) return;
+    const searchParams = new URLSearchParams(this.props.location.search);
+    const input = searchParams.get('v');
+    const [name, suffix]= input.split('.');
+    const output = `${name}_copy.${suffix}`;
+    const data = {
+      input,
+      output,
+      start: this.state.start,
+      end: this.state.end,
+    };
+    fetch('/api/ffmpeg', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    }).then(() => {
+      console.log('done');
+    });
+  }
+
   render() {
     const searchParams = new URLSearchParams(this.props.location.search);
     return (
@@ -64,6 +89,13 @@ class VideoDetail extends React.Component {
           <span>New Cast:</span>
           <input type="text" value={this.state.newCast} onChange={e => this.setState({ newCast: e.target.value })} />
           <button onClick={this.handleAddCastButtonClick}>Add Cast</button>
+        </div>
+        <div>
+          <span>Start:</span>
+          <input type="text" value={this.state.start} onChange={e => this.setState({ start: e.target.value })} />
+          <span>End:</span>
+          <input type="text" value={this.state.end} onChange={e => this.setState({ end: e.target.value })} />
+          <button onClick={this.handleConfirmButtonClick}>Confirm</button>
         </div>
       </>
     );

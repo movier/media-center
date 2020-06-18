@@ -173,8 +173,13 @@ class FFmpegController(Resource):
     end = args['end']
     input_file_path = g.path + input
     output_file_path = g.path + output
-    command = "ffmpeg -i " + input_file_path + " -ss  " + start + " -to " + end + " -c copy " + output_file_path
+
+    FMT = '%H:%M:%S'
+    tdelta = datetime.strptime(end, FMT) - datetime.strptime(start, FMT)
+    duration = str(tdelta)
+    command = "ffmpeg -ss " + start + " -i " + input_file_path + " -t " + duration + " -vcodec copy -acodec copy " + output_file_path 
     os.system(command)
+
     return '', 201
 
 api.add_resource(FFmpegController, '/ffmpeg')
