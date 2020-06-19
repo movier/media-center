@@ -64,6 +64,8 @@ class VideoDetail extends React.Component {
       start: this.state.start,
       end: this.state.end,
     };
+    const favicon = document.getElementById('favicon');
+    favicon.href = process.env.PUBLIC_URL + '/loading.gif';
     fetch('/api/ffmpeg', {
       method: 'POST',
       headers: {
@@ -71,7 +73,7 @@ class VideoDetail extends React.Component {
       },
       body: JSON.stringify(data),
     }).then(() => {
-      console.log('done');
+      favicon.href = process.env.PUBLIC_URL + '/favicon.ico';
     });
   }
 
