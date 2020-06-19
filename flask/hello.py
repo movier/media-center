@@ -177,7 +177,7 @@ class FFmpegController(Resource):
     FMT = '%H:%M:%S'
     tdelta = datetime.strptime(end, FMT) - datetime.strptime(start, FMT)
     duration = str(tdelta)
-    command = "ffmpeg -ss " + start + " -i " + input_file_path + " -t " + duration + " -vcodec copy -acodec copy " + output_file_path 
+    command = 'ffmpeg -ss "%s" -i "%s" -t "%s" -vcodec copy -acodec copy "%s"' % (start, input_file_path, duration, output_file_path) 
     os.system(command)
 
     return '', 201
