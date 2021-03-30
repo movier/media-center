@@ -17,7 +17,7 @@ docker exec -it my-running-flask-app bash
 ```
 docker exec -it my-running-react-app bash
 ```
-# Others
+# Below is the nginx configurations for production mode
 ```
 server {
     listen 80;
@@ -25,6 +25,7 @@ server {
 
     location / {
         root /mnt/sda4/jffs/my-video-app/frontend/build;
+        try_files $uri $uri/ /index.html;
     }
     location = /api { rewrite ^ /api/ last; }
     location /api { try_files $uri @my-video-app-api; }
