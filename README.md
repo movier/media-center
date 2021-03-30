@@ -17,20 +17,25 @@ docker exec -it my-running-flask-app bash
 ```
 docker exec -it my-running-react-app bash
 ```
-# Below is the nginx configurations for production mode
+# Below is part of the nginx configurations for production mode
 ```
 server {
-    listen 80;
-    server_name localhost;
+    listen 9000;
 
     location / {
-        root /mnt/sda4/jffs/my-video-app/frontend/build;
+        root /mnt/sda4/jffs/my-video-app/react/build;
         try_files $uri $uri/ /index.html;
     }
+
+    location ~ \.(mp4|jpg)$ {
+        root /mnt/sda4/data/AI;
+    }
+
     location = /api { rewrite ^ /api/ last; }
     location /api { try_files $uri @my-video-app-api; }
     location @my-video-app-api{
         include fastcgi_params;
+        fastcgi_read_timeout 1h;
         fastcgi_split_path_info ^(/api)(.*)$;
         fastcgi_param PATH_INFO $fastcgi_path_info;
         fastcgi_param SCRIPT_NAME $fastcgi_script_name;
