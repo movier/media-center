@@ -1,9 +1,9 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-import VideoList from './VideoList';
-import VideoDetail from './VideoDetail';
+import VideoList from './features/video/VideoList';
+import VideoDetail from './features/video/VideoDetail';
 import RemainingTime from './RemainingTime';
-import CastList from './CastList';
+import CastList from './features/cast/CastList';
 
 function BasicExample() {
   return (
