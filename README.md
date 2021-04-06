@@ -13,10 +13,15 @@ open http://localhost:9000 and http://localhost:9001 to visit these two websites
 ```
 docker exec -it my-running-flask-app bash
 ```
+
 ## Access frontend container
 ```
 docker exec -it my-running-react-app bash
 ```
+
+### Deploy FE
+After getting into FE container, run `yarn build` to generate new static files and then in production environment, run `git pull` to get the latest code.
+
 # Below is part of the nginx configurations for production mode
 ```
 server {
