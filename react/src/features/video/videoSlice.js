@@ -6,13 +6,13 @@ export const videoSlice = createSlice({
     list: [],
   },
   reducers: {
-    saveListData: (state, action) => {
+    saveVideoListData: (state, action) => {
       state.list = action.payload;
     },
   },
 });
 
-export const { saveListData } = videoSlice.actions;
+export const { saveVideoListData } = videoSlice.actions;
 
 export default videoSlice.reducer;
-export const selectList = state => state.video.list;
+export const selectVideoList = state => state.video.list;

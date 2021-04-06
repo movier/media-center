@@ -1,15 +1,15 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
-  saveListData,
-  selectList,
+  saveVideoListData,
+  selectVideoList,
  } from './videoSlice';
 import './VideoList.css';
 import { Link } from "react-router-dom";
 
 export default function VideoList(props) {
 
-  const videoListData = useSelector(selectList);
+  const videoListData = useSelector(selectVideoList);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -23,7 +23,7 @@ export default function VideoList(props) {
           const { remaining_seconds: remainingSeconds } = data.data;
           props.history.replace('/remaining-time', { remainingSeconds });
         } else {
-          dispatch(saveListData(data));
+          dispatch(saveVideoListData(data));
         }
       });
   }, []);
@@ -32,7 +32,7 @@ export default function VideoList(props) {
     fetch('/api?is_check=true')
       .then(response => response.json())
       .then(data => {
-        dispatch(saveListData(data));
+        dispatch(saveVideoListData(data));
       });
   }
 
