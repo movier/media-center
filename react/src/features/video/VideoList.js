@@ -1,26 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
-  increment,
-  selectCount,
+  saveListData,
+  selectList,
  } from './videoSlice';
 import './VideoList.css';
 import { Link } from "react-router-dom";
 
 export default function VideoList(props) {
 
-  let initialData = [];
-  const data = localStorage.getItem('data');
-  if (data) {
-    initialData = JSON.parse(data);
-  }
-
-  const [ videoList, setVideoList ] = useState(initialData);
-  const count = useSelector(selectCount);
+  const videoListData = useSelector(selectList);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (videoList.length > 0) return;
+    if (videoListData.length > 0) return;
     fetch('/api')
       .then(response => response.json())
       .then(data => {
@@ -30,8 +23,7 @@ export default function VideoList(props) {
           const { remaining_seconds: remainingSeconds } = data.data;
           props.history.replace('/remaining-time', { remainingSeconds });
         } else {
-          localStorage.setItem('data', JSON.stringify(data));
-          setVideoList(data);
+          dispatch(saveListData(data));
         }
       });
   }, []);
@@ -40,8 +32,7 @@ export default function VideoList(props) {
     fetch('/api?is_check=true')
       .then(response => response.json())
       .then(data => {
-        localStorage.setItem('data', JSON.stringify(data));
-        setVideoList(data);
+        dispatch(saveListData(data));
       });
   }
 
@@ -50,17 +41,9 @@ export default function VideoList(props) {
       <div style={{ marginTop: 16, textAlign: 'center' }}>
         <button onClick={handleCheckUpdate}>检查更新</button>
         <Link to="/cast">Cast</Link>
-        <button
-          // className={styles.button}
-          aria-label="Increment value"
-          onClick={() => dispatch(increment())}
-        >
-          +
-        </button>
-        <span>{count}</span>
       </div>
       <div className="VideoList">
-        {videoList.map((value, index) => {
+        {videoListData.map((value, index) => {
           const { uri, poster_uri, title, id, cast } = value;
           const castNames = cast.map(m => m.name).join(',');
           return (
