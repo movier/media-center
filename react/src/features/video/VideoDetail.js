@@ -28,13 +28,13 @@ class VideoDetail extends React.Component {
     }
   }
 
-  handleShotButtonClicked = () => {
-    fetch('/api/shots', {
-      method: 'POST'
-    }).then(() => {
-      this.props.history.goBack()
-    });
-  }
+  // handleShotButtonClicked = () => {
+  //   fetch('/api/shots', {
+  //     method: 'POST'
+  //   }).then(() => {
+  //     this.props.history.goBack()
+  //   });
+  // }
 
   handleAddCastButtonClick = () => {
     if (!this.state.newCast) return;
@@ -85,7 +85,7 @@ class VideoDetail extends React.Component {
           <source src={searchParams.get('v')} />
         </video>
         <button onClick={this.handleDeleteButtonClicked}>Delete</button>
-        <button onClick={this.handleShotButtonClicked}>Shot</button>
+        {/* <button onClick={this.handleShotButtonClicked}>Shot</button> */}
         <div>{this.state.cast.map((m, i) => <span style={{ marginRight: 10 }} key={i}>{m}</span>)}</div>
         <div>
           <span>New Cast:</span>
