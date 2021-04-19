@@ -80,23 +80,23 @@ def traverse_dir(base_path):
     else:
       traverse_dir(path)
 
-def check_last_shot_date():
-  last_shot = g.db.query(Shot).order_by(Shot.id.desc()).first()
-  if not last_shot: return
-  now = datetime.now()
-  return now - last_shot.created_date
+# def check_last_shot_date():
+#   last_shot = g.db.query(Shot).order_by(Shot.id.desc()).first()
+#   if not last_shot: return
+#   now = datetime.now()
+#   return now - last_shot.created_date
 
 class HelloWorld(Resource):
   def get(self):
-    difference = check_last_shot_date()
-    if difference and difference.days < 7:
-      remaining_seconds = 7 * 24 * 60 * 60 - floor(difference.total_seconds())
-      return {
-        'has_error': True,
-        'error_code': 403,
-        'error_message': 'It is less than 7 days since last time you shot. ',
-        'data': {'remaining_seconds': remaining_seconds}
-      }
+    # difference = check_last_shot_date()
+    # if difference and difference.days < 7:
+    #   remaining_seconds = 7 * 24 * 60 * 60 - floor(difference.total_seconds())
+    #   return {
+    #     'has_error': True,
+    #     'error_code': 403,
+    #     'error_message': 'It is less than 7 days since last time you shot. ',
+    #     'data': {'remaining_seconds': remaining_seconds}
+    #   }
     print(request.referrer)
     parser = reqparse.RequestParser()
     parser.add_argument('is_check', type=bool)
