@@ -5,8 +5,8 @@ from flask_script import Manager
 from flask_migrate import Migrate, MigrateCommand
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////mnt/sda4/jffs/my-video-app/flask/test.db'
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////mnt/sda4/jffs/my-video-app/flask/kids.db'
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////mnt/sda4/jffs/my-video-app/flask/test.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////mnt/sda4/jffs/my-video-app/flask/kids.db'
 
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
@@ -14,31 +14,31 @@ migrate = Migrate(app, db)
 manager = Manager(app)
 manager.add_command('db', MigrateCommand)
 
-video_cast_table = db.Table('video_cast', db.Model.metadata,
-  db.Column('video_id', db.Integer, db.ForeignKey('videos.id')),
-  db.Column('cast_id', db.Integer, db.ForeignKey('cast.id'))
+media_people_table = db.Table('media_people', db.Model.metadata,
+  db.Column('media_id', db.Integer, db.ForeignKey('media.id')),
+  db.Column('people_id', db.Integer, db.ForeignKey('people.id'))
 )
 
-class Video(db.Model):
-  __tablename__ = 'videos'
+class Media(db.Model):
+  __tablename__ = 'media'
   id = db.Column(db.Integer, primary_key=True, index=True)
   title = db.Column(db.String, index=True)
   uri = db.Column(db.String)
   poster_uri = db.Column(db.String)
   mtime = db.Column(db.DateTime, index=True)
-  cast = db.relationship(
-    'Cast',
-    secondary=video_cast_table,
-    back_populates="videos")
+  people = db.relationship(
+    'People',
+    secondary=media_people_table,
+    back_populates="media")
 
-class Cast(db.Model):
-  __tablename__ = 'cast'
+class People(db.Model):
+  __tablename__ = 'people'
   id = db.Column(db.Integer, primary_key=True, index=True)
   name = db.Column(db.String, index=True, unique=True)
-  videos = db.relationship(
-    'Video',
-    secondary=video_cast_table,
-    back_populates="cast")
+  media = db.relationship(
+    'Media',
+    secondary=media_people_table,
+    back_populates="people")
 
 class Shot(db.Model):
   __tablename__ = 'shots'

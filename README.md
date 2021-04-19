@@ -1,5 +1,4 @@
 # Updated on 2021-04-19
-
 我想基于目前的 my-video-app 结合和我之前想要开发的 Moment，打造一个家庭多媒体中心。
 
 The router will work as the server. All the images and videos will be stored on it.
@@ -10,6 +9,15 @@ Two types of videos for this project, therefore:
 * there are two static paths for each of them
 * there are two frontend ports for each of them (the ports are used to distinguish database and static file path)
 * take these two types into account when designing or developing new features
+* Data migration needs to be done twice
+
+# Features
+* Media List Page
+* Check Updates to see if there are any untracked media
+* Media Details Page
+  * Add people
+  * Delete media
+* People List Page
 
 # Run the project 
 ```

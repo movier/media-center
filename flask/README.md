@@ -54,5 +54,10 @@ screen
 ctrl a + d
 ```
 
+# Data Migration
+```
+python manage.py db upgrade
+```
+
 # Troubleshooting
 1. If you got a 404 and find permission denied in error log, please make sure that the user of nginx and that of the fcgi file should be the same.

@@ -2,7 +2,7 @@ from datetime import datetime
 from flask import Flask, request, g
 from flask_restful import Resource, Api, fields, reqparse, abort, marshal
 # from database import db_session, db_session2
-from manage import Video, Shot, Cast
+from manage import Media, Shot, People
 from flask_cors import CORS
 from sqlalchemy import desc
 from os import listdir
@@ -28,12 +28,12 @@ resource_fields = {
   'uri': fields.String,
   'poster_uri': fields.String,
   'mtime': fields.DateTime(dt_format='iso8601'),
-  'cast': fields.List(fields.Nested(cast_fields)),
+  'people': fields.List(fields.Nested(cast_fields)),
 }
 cast_fields_res = {
   'id': fields.Integer,
   'name': fields.String,
-  'videos': fields.List(fields.Nested(resource_fields))
+  'media': fields.List(fields.Nested(resource_fields))
 }
 
 def is_kids_video(url):
@@ -72,9 +72,9 @@ def traverse_dir(base_path):
         poster_uri = "".join(root) + ".jpg"
         mtimestamp = getmtime(path)
         mdatetime = datetime.fromtimestamp(mtimestamp)
-        query_existing_video = g.db.query(Video).filter(Video.title == title).count()
+        query_existing_video = g.db.query(Media).filter(Media.title == title).count()
         if query_existing_video == 0:
-          v = Video(title=title, uri=uri,
+          v = Media(title=title, uri=uri,
             poster_uri=poster_uri, mtime=mdatetime)
           g.db.add(v)
     else:
@@ -104,14 +104,14 @@ class HelloWorld(Resource):
     if args['is_check']:
       traverse_dir(g.path)
       g.db.commit()
-    result = g.db.query(Video).order_by(desc(Video.mtime)).all()
+    result = g.db.query(Media).order_by(desc(Media.mtime)).all()
     return marshal(result, resource_fields), 200
 
 def abort_if_video_doesnt_exist(video_id):
-  video = g.db.query(Video).get(video_id)
-  if not video:
-    abort(404, message="Video {} doesn't exist".format(video_id))
-  return video
+  media = g.db.query(Media).get(video_id)
+  if not media:
+    abort(404, message="Media {} doesn't exist".format(video_id))
+  return media
 
 def remove_file(path):
   if os.path.exists(path):
@@ -121,12 +121,12 @@ def remove_file(path):
 
 class VideoController(Resource):
   def delete(self, video_id):
-    video = abort_if_video_doesnt_exist(video_id)
-    poster_file_path = g.path + video.poster_uri
+    media = abort_if_video_doesnt_exist(video_id)
+    poster_file_path = g.path + media.poster_uri
     remove_file(poster_file_path)
-    video_file_path = g.path + video.uri
+    video_file_path = g.path + media.uri
     remove_file(video_file_path)
-    g.db.delete(video)
+    g.db.delete(media)
     g.db.commit()
     return '', 204
   
@@ -135,15 +135,15 @@ class VideoController(Resource):
     parser.add_argument('cast_name')
     args = parser.parse_args()
     cast_name = args['cast_name']
-    query_cast = g.db.query(Cast).filter_by(name=cast_name)
+    query_cast = g.db.query(People).filter_by(name=cast_name)
 
     if query_cast.count() > 0:
       c = query_cast.first()
     else:
-      c = Cast(name=cast_name)
+      c = People(name=cast_name)
 
-    v = g.db.query(Video).get(video_id)
-    v.cast.append(c)
+    v = g.db.query(Media).get(video_id)
+    v.people.append(c)
     g.db.add(v)
     g.db.commit()
     return True, 200
@@ -156,7 +156,7 @@ class ShotList(Resource):
 
 class CastController(Resource):
   def get(self):
-    result = g.db.query(Cast).all()
+    result = g.db.query(People).all()
     return marshal(result, cast_fields_res), 200
 
 class FFmpegController(Resource):
