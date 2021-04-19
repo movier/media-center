@@ -1,3 +1,11 @@
+# Updated on 2021-04-19
+
+我想基于目前的 my-video-app 结合和我之前想要开发的 Moment，打造一个家庭多媒体中心。
+
+The router will work as the server. All the images and videos will be stored on it.
+
+当家里的终端设备链接到家庭 Wi-Fi 后，自动上传手机相册到路由器上，这样一方面把手机相册都备份了，另一方面也方便我统一管理。
+
 Two types of videos for this project, therefore:
 * there are two static paths for each of them
 * there are two frontend ports for each of them (the ports are used to distinguish database and static file path)
