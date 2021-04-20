@@ -1,4 +1,4 @@
-# Updated on 2021-04-19
+# Background, Updated on 2021-04-19
 我想基于目前的 my-video-app 结合和我之前想要开发的 Moment，打造一个家庭多媒体中心。
 
 The router will work as the server. All the images and videos will be stored on it.
@@ -10,6 +10,15 @@ Two types of videos for this project, therefore:
 * there are two frontend ports for each of them (the ports are used to distinguish database and static file path)
 * take these two types into account when designing or developing new features
 * Data migration needs to be done twice
+
+# 生产环境的 Nginx 配置
+为了腾出路由器的空间，一些文件被移动到了移动硬盘里，只需要修改 Nginx 的配置：
+```
+location ~ ^/newdata/.+\.(mp4|jpg)$ {        # 当请求的是以 /newdata/ 开头的 mp4 或者 jpg 文件时
+    root /mnt/TOSHIBA;                       # 到移动硬盘里去寻找相关文件
+}
+```
+Nginx 实在是太帅了
 
 # Features
 * Media List Page
@@ -49,6 +58,14 @@ server {
     }
 
     location ~ ^/newdata/.+\.(mp4|jpg)$ {
+        root /mnt/TOSHIBA;
+    }
+
+    location ~ ^/JULIA/.+\.(mp4|jpg)$ {
+        root /mnt/TOSHIBA;
+    }
+
+    location ~ ^/霧島さくら/.+\.(mp4|jpg)$ {
         root /mnt/TOSHIBA;
     }
 
