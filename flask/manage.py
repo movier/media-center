@@ -1,13 +1,12 @@
 import datetime
-import enum
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_script import Manager
 from flask_migrate import Migrate, MigrateCommand
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////mnt/sda4/jffs/my-video-app/flask/test.db'
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////mnt/sda4/jffs/my-video-app/flask/kids.db'
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////mnt/sda4/jffs/my-video-app/flask/test.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////mnt/sda4/jffs/my-video-app/flask/kids.db'
 
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
@@ -20,11 +19,6 @@ media_people_table = db.Table('media_people', db.Model.metadata,
   db.Column('people_id', db.Integer, db.ForeignKey('people.id'))
 )
 
-class mediaTypeEnum(enum.Enum):
-  video = 1
-  photo = 2
-  live_photo = 3
-
 class Media(db.Model):
   __tablename__ = 'media'
   id = db.Column(db.Integer, primary_key=True, index=True)
@@ -32,7 +26,7 @@ class Media(db.Model):
   uri = db.Column(db.String)
   poster_uri = db.Column(db.String)
   created_at = db.Column(db.DateTime, index=True)
-  media_type = db.Column(db.Enum(mediaTypeEnum))
+  media_type = db.Column(db.Integer) # 1 for video, 2 for photo, 3 for live_photo
   size = db.Column(db.Integer)
   people = db.relationship(
     'People',
