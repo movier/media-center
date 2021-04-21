@@ -55,6 +55,14 @@ ctrl a + d
 ```
 
 # Data Migration
+1.Update `manage.py` and related files
+
+2.Generate a migration script
+```
+python manage.py db migrate
+```
+
+3.Update the script if necessary, then do the migration twice connecting to different db
 ```
 python manage.py db upgrade
 ```
