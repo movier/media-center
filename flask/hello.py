@@ -24,6 +24,7 @@ cast_fields = {
 }
 resource_fields = {
   'id': fields.Integer,
+  'size': fields.Integer,
   'title': fields.String,
   'uri': fields.String,
   'poster_uri': fields.String,
