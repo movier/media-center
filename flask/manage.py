@@ -1,4 +1,5 @@
 import datetime
+import enum
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_script import Manager
@@ -19,6 +20,11 @@ media_people_table = db.Table('media_people', db.Model.metadata,
   db.Column('people_id', db.Integer, db.ForeignKey('people.id'))
 )
 
+class mediaTypeEnum(enum.Enum):
+  video = 1
+  photo = 2
+  live_photo = 3
+
 class Media(db.Model):
   __tablename__ = 'media'
   id = db.Column(db.Integer, primary_key=True, index=True)
@@ -26,6 +32,8 @@ class Media(db.Model):
   uri = db.Column(db.String)
   poster_uri = db.Column(db.String)
   created_at = db.Column(db.DateTime, index=True)
+  media_type = db.Column(db.Enum(mediaTypeEnum))
+  size = db.Column(db.Integer)
   people = db.relationship(
     'People',
     secondary=media_people_table,
