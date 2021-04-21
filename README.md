@@ -69,6 +69,10 @@ server {
         root /mnt/TOSHIBA;
     }
 
+    location ~ ^/水野朝陽/.+\.(mp4|jpg)$ {
+        root /mnt/TOSHIBA;
+    }
+
     location ~ \.(mp4|jpg)$ {
         root /mnt/sda4/data/AI;
     }
