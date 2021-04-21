@@ -44,13 +44,14 @@ export default function VideoList(props) {
       </div>
       <div className="VideoList">
         {videoListData.map((value, index) => {
-          const { uri, poster_uri, title, id, people } = value;
+          const { uri, poster_uri, title, id, people, created_at } = value;
           const peopleNames = people.map(m => m.name).join(',');
           return (
             <div key={index}>
               <Link className="VideoList__link" to={`/watch?v=${uri}&id=${id}&cast=${peopleNames}`}>
                 <img src={poster_uri} alt={title} />
                 <p className="VideoList__title">{title}</p>
+                <p className="VideoList__title">{created_at}</p>
               </Link>
             </div>
           );
