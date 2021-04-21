@@ -62,7 +62,7 @@ ctrl a + d
 python manage.py db migrate
 ```
 
-3.Update the script if necessary, make sure both the upgrade method and downgrade method work well. Then do the migration twice connecting to different db.
+3.Update the script if necessary, make sure both the upgrade method and downgrade method work well. Then do the upgrade migration twice connecting to different db.
 ```
 python manage.py db upgrade
 python manage.py db downgrade
