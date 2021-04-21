@@ -27,7 +27,7 @@ resource_fields = {
   'title': fields.String,
   'uri': fields.String,
   'poster_uri': fields.String,
-  'mtime': fields.DateTime(dt_format='iso8601'),
+  'created_at': fields.DateTime(dt_format='iso8601'),
   'people': fields.List(fields.Nested(cast_fields)),
 }
 cast_fields_res = {
@@ -75,7 +75,7 @@ def traverse_dir(base_path):
         query_existing_video = g.db.query(Media).filter(Media.title == title).count()
         if query_existing_video == 0:
           v = Media(title=title, uri=uri,
-            poster_uri=poster_uri, mtime=mdatetime)
+            poster_uri=poster_uri, created_at=mdatetime)
           g.db.add(v)
     else:
       traverse_dir(path)
@@ -104,7 +104,7 @@ class HelloWorld(Resource):
     if args['is_check']:
       traverse_dir(g.path)
       g.db.commit()
-    result = g.db.query(Media).order_by(desc(Media.mtime)).all()
+    result = g.db.query(Media).order_by(desc(Media.created_at)).all()
     return marshal(result, resource_fields), 200
 
 def abort_if_video_doesnt_exist(video_id):

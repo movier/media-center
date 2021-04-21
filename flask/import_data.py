@@ -20,7 +20,7 @@ def traverse_dir(base_path):
                 mtimestamp = getmtime(path)
                 mdatetime = datetime.fromtimestamp(mtimestamp)
                 v = Video(title=title, uri=uri,
-                          poster_uri=poster_uri, mtime=mdatetime)
+                          poster_uri=poster_uri, created_at=mdatetime)
                 db.session.add(v)
         else:
             traverse_dir(path)
