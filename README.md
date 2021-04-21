@@ -73,6 +73,10 @@ server {
         root /mnt/TOSHIBA;
     }
 
+    location ~ ^/篠田ゆう/.+\.(mp4|jpg)$ {
+        root /mnt/TOSHIBA;
+    }
+
     location ~ \.(mp4|jpg)$ {
         root /mnt/sda4/data/AI;
     }
