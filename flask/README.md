@@ -55,7 +55,7 @@ ctrl a + d
 ```
 
 # Data Migration
-0.Back up db. Nothing is more important than this.
+0.(Important) Back up db. Nothing is more important
 
 1.Update `manage.py` and related files
 
