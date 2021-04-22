@@ -123,9 +123,9 @@ def remove_file(path):
 class VideoController(Resource):
   def delete(self, video_id):
     media = abort_if_video_doesnt_exist(video_id)
-    poster_file_path = g.path + media.poster_uri
+    poster_file_path = media.poster_uri
     remove_file(poster_file_path)
-    video_file_path = g.path + media.uri
+    video_file_path = media.uri
     remove_file(video_file_path)
     g.db.delete(media)
     g.db.commit()
