@@ -57,26 +57,6 @@ server {
         try_files $uri $uri/ /index.html;
     }
 
-    location ~ ^/newdata/.+\.(mp4|jpg)$ {
-        root /mnt/TOSHIBA;
-    }
-
-    location ~ ^/JULIA/.+\.(mp4|jpg)$ {
-        root /mnt/TOSHIBA;
-    }
-
-    location ~ ^/霧島さくら/.+\.(mp4|jpg)$ {
-        root /mnt/TOSHIBA;
-    }
-
-    location ~ ^/水野朝陽/.+\.(mp4|jpg)$ {
-        root /mnt/TOSHIBA;
-    }
-
-    location ~ ^/篠田ゆう/.+\.(mp4|jpg)$ {
-        root /mnt/TOSHIBA;
-    }
-
     location ~ \.(mp4|jpg)$ {
         root /mnt/sda4/data/AI;
     }
