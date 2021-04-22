@@ -1,7 +1,9 @@
 After installing new dependency through `pip3 install`, run `pip3 freeze > requirements.txt` to export dependencies
 
 # Get into command line of the running container
-`docker exec -it my-running-flask-app bash`
+```
+docker exec -it my-running-flask-app bash
+```
 
 # Server Configuration
 
