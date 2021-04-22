@@ -1,4 +1,3 @@
-# Test update repository name aa
 # Background, Updated on 2021-04-19
 我想基于目前的 my-video-app 结合和我之前想要开发的 Moment，打造一个家庭多媒体中心。
 
