@@ -70,7 +70,7 @@ python manage.py db upgrade
 python manage.py db downgrade
 ```
 
-4.Sometimes we also need to manipulate data. Usually I will write a Python script to do so. This also needs to be done twice by changing the db and base path.
+4.(Optional) Sometimes we also need to manipulate data. Usually I will write a Python script to do so. This also needs to be done twice by changing the db and base path.
 
 # Troubleshooting
 1. If you got a 404 and find permission denied in error log, please make sure that the user of nginx and that of the fcgi file should be the same.
