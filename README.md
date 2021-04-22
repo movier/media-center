@@ -22,7 +22,7 @@ Nginx 实在是太帅了
 
 # Features
 * Media List Page
-* Check Updates to see if there are any untracked media
+  * Check Updates to see if there are any untracked media
 * Media Details Page
   * Add people
   * Delete media, including db record and real file
