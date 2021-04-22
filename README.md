@@ -25,7 +25,7 @@ Nginx 实在是太帅了
 * Check Updates to see if there are any untracked media
 * Media Details Page
   * Add people
-  * Delete media
+  * Delete media, including db record and real file
 * People List Page
 
 # Run the project 
