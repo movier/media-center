@@ -2,8 +2,8 @@ import os, sys, subprocess
 from manage import db, Media
 from datetime import datetime
 
-# base_path = "/mnt/sda4/data/kids"
-base_path = "/mnt/sda4/data/AI"
+base_path = "/mnt/sda4/data/kids"
+# base_path = "/mnt/sda4/data/AI"
 
 def get_duration(filename):
   result = subprocess.run(
