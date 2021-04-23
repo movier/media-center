@@ -27,7 +27,8 @@ for media in db.session.query(Media).all():
     media.duration = duration
 
     creation_datetime = get_datetime(media.uri)
-    media.datetime = datetime.strptime(creation_datetime, '%Y-%m-%dT%H:%M:%S.%fZ')
+    if creation_datetime:
+      media.datetime = datetime.strptime(creation_datetime, '%Y-%m-%dT%H:%M:%S.%fZ')
 
     db.session.add(media)
 
