@@ -30,6 +30,8 @@ resource_fields = {
   'poster_uri': fields.String,
   'created_at': fields.DateTime(dt_format='iso8601'),
   'people': fields.List(fields.Nested(cast_fields)),
+  'datetime': fields.DateTime(dt_format='iso8601'),
+  'duration': fields.Float,
 }
 cast_fields_res = {
   'id': fields.Integer,

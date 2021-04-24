@@ -76,7 +76,7 @@ export default function VideoList(props) {
       </div>
       <div className="VideoList">
         {videoListData.map((value, index) => {
-          const { uri, poster_uri, title, id, people, created_at, size } = value;
+          const { uri, poster_uri, title, id, people, created_at, size, datetime, duration } = value;
           const peopleNames = people.map(m => m.name).join(',');
           return (
             <div key={index}>
@@ -85,6 +85,8 @@ export default function VideoList(props) {
                 <p className="VideoList__title">{title}</p>
                 <p className="VideoList__title">{created_at}</p>
                 <p className="VideoList__title">{humanFileSize(size, true)}</p>
+                <p className="VideoList__title">{datetime}</p>
+                <p className="VideoList__title">{new Date(Math.ceil(duration) * 1000).toISOString().substr(11, 8)}</p>
               </Link>
             </div>
           );
