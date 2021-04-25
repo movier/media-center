@@ -1,46 +1,32 @@
-import React from 'react';
+import React, { useState } from 'react';
 import '../../App.css';
 
-class VideoDetail extends React.Component {
+export default function VideoDetail(props) {
 
-  constructor(props) {
-    super(props);
+  const searchParams = new URLSearchParams(props.location.search);
 
-    console.log('dd', props.location.search);
-    const searchParams = new URLSearchParams(props.location.search);
-    this.state = {
-      cast: searchParams.get('cast').split(','),
-      newCast: '',
-      start: '',
-      end: '',
-    };
-  }
+  const [cast, setCast] = useState(searchParams.get('cast').split(','));
+  const [newCast, setNewCast] = useState('');
+  const [start, setStart] = useState('');
+  const [end, setEnd] = useState('');
 
-  handleDeleteButtonClicked = () => {
-    if (window.confirm("Are you sure to delete this video?")) { 
-      const searchParams = new URLSearchParams(this.props.location.search);
+  const handleDeleteButtonClicked = () => {
+    if (window.confirm("Are you sure to delete this video?")) {
+      const searchParams = new URLSearchParams(props.location.search);
       const id = searchParams.get('id');
       fetch(`/api/videos/${id}`, {
         method: 'DELETE'
       }).then(() => {
-        this.props.history.goBack();
+        props.history.goBack();
       });
     }
   }
 
-  // handleShotButtonClicked = () => {
-  //   fetch('/api/shots', {
-  //     method: 'POST'
-  //   }).then(() => {
-  //     this.props.history.goBack()
-  //   });
-  // }
-
-  handleAddCastButtonClick = () => {
-    if (!this.state.newCast) return;
-    const searchParams = new URLSearchParams(this.props.location.search);
+  const handleAddCastButtonClick = () => {
+    if (!newCast) return;
+    const searchParams = new URLSearchParams(props.location.search);
     const id = searchParams.get('id');
-    const data = { cast_name: this.state.newCast };
+    const data = { cast_name: newCast };
     fetch(`/api/videos/${id}`, {
       method: 'PUT',
       headers: {
@@ -48,21 +34,22 @@ class VideoDetail extends React.Component {
       },
       body: JSON.stringify(data),
     }).then(() => {
-      this.setState({ cast: this.state.cast.concat(this.state.newCast), newCast: '' });
+      setCast(cast.concat(newCast));
+      setNewCast('');
     })
   }
 
-  handleConfirmButtonClick = () => {
-    if (!this.state.start || !this.state.end) return;
-    const searchParams = new URLSearchParams(this.props.location.search);
+  const handleConfirmButtonClick = () => {
+    if (!start || !end) return;
+    const searchParams = new URLSearchParams(props.location.search);
     const input = searchParams.get('v');
-    const [name, suffix]= input.split('.');
+    const [name, suffix] = input.split('.');
     const output = `${name}_copy.${suffix}`;
     const data = {
       input,
       output,
-      start: this.state.start,
-      end: this.state.end,
+      start,
+      end,
     };
     const favicon = document.getElementById('favicon');
     favicon.href = process.env.PUBLIC_URL + '/loading.gif';
@@ -77,31 +64,30 @@ class VideoDetail extends React.Component {
     });
   }
 
-  render() {
-    const searchParams = new URLSearchParams(this.props.location.search);
-    return (
-      <>
-        <video controls autoPlay>
-          <source src={searchParams.get('v')} />
-        </video>
-        <button onClick={this.handleDeleteButtonClicked}>Delete</button>
-        {/* <button onClick={this.handleShotButtonClicked}>Shot</button> */}
-        <div>{this.state.cast.map((m, i) => <span style={{ marginRight: 10 }} key={i}>{m}</span>)}</div>
-        <div>
-          <span>New Cast:</span>
-          <input type="text" value={this.state.newCast} onChange={e => this.setState({ newCast: e.target.value })} />
-          <button onClick={this.handleAddCastButtonClick}>Add Cast</button>
-        </div>
-        <div>
-          <span>Start:</span>
-          <input type="text" value={this.state.start} onChange={e => this.setState({ start: e.target.value })} />
-          <span>End:</span>
-          <input type="text" value={this.state.end} onChange={e => this.setState({ end: e.target.value })} />
-          <button onClick={this.handleConfirmButtonClick}>Confirm</button>
-        </div>
-      </>
-    );
-  }
-}
+  return (
+    <>
+      <video controls autoPlay>
+        <source src={searchParams.get('v')} />
+      </video>
+      <button onClick={handleDeleteButtonClicked}>Delete</button>
+      <div>
+        {cast.map((m, i) => (
+          <span style={{ marginRight: 10 }} key={i}>{m}</span>
+        ))}
+      </div>
+      <div>
+        <span>New Cast:</span>
+        <input type="text" value={newCast} onChange={e => setCast(e.target.value)} />
+        <button onClick={handleAddCastButtonClick}>Add Cast</button>
+      </div>
+      <div>
+        <span>Start:</span>
+        <input type="text" value={start} onChange={e => setStart(e.target.value)} />
+        <span>End:</span>
+        <input type="text" value={end} onChange={e => setEnd(e.target.value)} />
+        <button onClick={handleConfirmButtonClick}>Confirm</button>
+      </div>
+    </>
+  );
 
-export default VideoDetail;
+}
