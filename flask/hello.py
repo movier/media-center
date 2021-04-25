@@ -32,6 +32,7 @@ resource_fields = {
   'people': fields.List(fields.Nested(cast_fields)),
   'datetime': fields.DateTime(dt_format='iso8601'),
   'duration': fields.Float,
+  'media_type': fields.Integer,
 }
 cast_fields_res = {
   'id': fields.Integer,
@@ -70,15 +71,20 @@ def traverse_dir(base_path):
       title, ext = splitext(f)
       if ext == ".mp4" and not f.startswith("._"):
         title = "".join(title)
-        uri = path[len(g.path):]
-        root, ext1 = splitext(uri)
+        # uri = path[len(g.path):]
+        root, ext1 = splitext(path)
         poster_uri = "".join(root) + ".jpg"
         mtimestamp = getmtime(path)
         mdatetime = datetime.fromtimestamp(mtimestamp)
         query_existing_video = g.db.query(Media).filter(Media.title == title).count()
         if query_existing_video == 0:
-          v = Media(title=title, uri=uri,
-            poster_uri=poster_uri, created_at=mdatetime)
+          v = Media(
+            title=title,
+            uri=path,
+            poster_uri=poster_uri,
+            created_at=mdatetime,
+            media_type=1,
+          )
           g.db.add(v)
     else:
       traverse_dir(path)
