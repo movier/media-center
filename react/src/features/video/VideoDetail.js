@@ -1,22 +1,26 @@
 import React, { useState } from 'react';
 import '../../App.css';
+import { useDispatch } from 'react-redux';
+import { removeVideo } from './videoSlice';
 
 export default function VideoDetail(props) {
 
   const searchParams = new URLSearchParams(props.location.search);
+  const id = searchParams.get('id');
 
   const [cast, setCast] = useState(searchParams.get('cast').split(','));
   const [newCast, setNewCast] = useState('');
   const [start, setStart] = useState('');
   const [end, setEnd] = useState('');
 
+  const dispatch = useDispatch();
+
   const handleDeleteButtonClicked = () => {
     if (window.confirm("Are you sure to delete this video?")) {
-      const searchParams = new URLSearchParams(props.location.search);
-      const id = searchParams.get('id');
       fetch(`/api/videos/${id}`, {
         method: 'DELETE'
       }).then(() => {
+        dispatch(removeVideo(id));
         props.history.goBack();
       });
     }
@@ -24,8 +28,6 @@ export default function VideoDetail(props) {
 
   const handleAddCastButtonClick = () => {
     if (!newCast) return;
-    const searchParams = new URLSearchParams(props.location.search);
-    const id = searchParams.get('id');
     const data = { cast_name: newCast };
     fetch(`/api/videos/${id}`, {
       method: 'PUT',
@@ -41,7 +43,6 @@ export default function VideoDetail(props) {
 
   const handleConfirmButtonClick = () => {
     if (!start || !end) return;
-    const searchParams = new URLSearchParams(props.location.search);
     const input = searchParams.get('v');
     const [name, suffix] = input.split('.');
     const output = `${name}_copy.${suffix}`;

@@ -9,10 +9,13 @@ export const videoSlice = createSlice({
     saveVideoListData: (state, action) => {
       state.list = action.payload;
     },
+    removeVideo: (state, action) => {
+      state.list = state.list.filter(f => f.id === action.payload);
+    }
   },
 });
 
-export const { saveVideoListData } = videoSlice.actions;
+export const { saveVideoListData, removeVideo } = videoSlice.actions;
 
 export default videoSlice.reducer;
 export const selectVideoList = state => state.video.list;
