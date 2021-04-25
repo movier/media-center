@@ -76,6 +76,7 @@ def traverse_dir(base_path):
         poster_uri = "".join(root) + ".jpg"
         mtimestamp = getmtime(path)
         mdatetime = datetime.fromtimestamp(mtimestamp)
+        file_size = os.path.getsize(path)
         query_existing_video = g.db.query(Media).filter(Media.title == title).count()
         if query_existing_video == 0:
           v = Media(
@@ -84,6 +85,7 @@ def traverse_dir(base_path):
             poster_uri=poster_uri,
             created_at=mdatetime,
             media_type=1,
+            size=file_size,
           )
           g.db.add(v)
     else:
