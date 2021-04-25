@@ -13,6 +13,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 from math import floor
+from update_duration_and_datetime import get_datetime, get_duration
 
 app = Flask(__name__)
 CORS(app)
@@ -79,6 +80,13 @@ def traverse_dir(base_path):
         file_size = os.path.getsize(path)
         query_existing_video = g.db.query(Media).filter(Media.title == title).count()
         if query_existing_video == 0:
+          duration = get_duration(path)
+          
+          creation_datetime = get_datetime(path)
+          media_datetime = None
+          if creation_datetime:
+            media_datetime = datetime.strptime(creation_datetime, '%Y-%m-%dT%H:%M:%S.%fZ')
+
           v = Media(
             title=title,
             uri=path,
@@ -86,6 +94,8 @@ def traverse_dir(base_path):
             created_at=mdatetime,
             media_type=1,
             size=file_size,
+            duration=duration,
+            datetime=media_datetime,
           )
           g.db.add(v)
     else:
