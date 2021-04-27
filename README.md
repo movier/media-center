@@ -11,14 +11,8 @@ Two types of videos for this project, therefore:
 * take these two types into account when designing or developing new features
 * Data migration needs to be done twice
 
-# 生产环境的 Nginx 配置
-为了腾出路由器的空间，一些文件被移动到了移动硬盘里，只需要修改 Nginx 的配置：
-```
-location ~ ^/newdata/.+\.(mp4|jpg)$ {        # 当请求的是以 /newdata/ 开头的 mp4 或者 jpg 文件时
-    root /mnt/TOSHIBA;                       # 到移动硬盘里去寻找相关文件
-}
-```
-Nginx 实在是太帅了
+# Others
+为了腾出路由器的空间，可以将那些不是非常重要的文件移到移动硬盘，移动完成后需要修改数据库中的相关记录
 
 # Features
 * Media List Page
