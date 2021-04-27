@@ -19,7 +19,7 @@ Two types of videos for this project, therefore:
   * Check Updates to see if there are any untracked media
 * Media Details Page
   * Add people
-  * Delete media, including db record and real file
+  * Delete media, including db record and real file, if the dir where the media is contains no other media resources, it will also be removed completely
 * People List Page
 
 # Run the project 
