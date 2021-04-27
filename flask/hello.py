@@ -102,43 +102,18 @@ def traverse_dir(base_path):
       traverse_dir(path)
 
 def traverse_dir_for_other_media(dir, media_id):
-  result = False
-
   for f in listdir(dir):
     path = join(dir, f)
     if isfile(path):
       query_media = g.db.query(Media).filter(Media.uri == path or Media.poster_uri == path).all()
-      print('query_media', query_media)
       for m in query_media:
-        print('m', m)
         if m.id != media_id:
-          result = True
-          print('True', m.id, media_id)
           return True
-      # if result:
-        # break
     else:
       return traverse_dir_for_other_media(path, media_id)
 
-  return result
-
-# def check_last_shot_date():
-#   last_shot = g.db.query(Shot).order_by(Shot.id.desc()).first()
-#   if not last_shot: return
-#   now = datetime.now()
-#   return now - last_shot.created_date
-
 class HelloWorld(Resource):
   def get(self):
-    # difference = check_last_shot_date()
-    # if difference and difference.days < 7:
-    #   remaining_seconds = 7 * 24 * 60 * 60 - floor(difference.total_seconds())
-    #   return {
-    #     'has_error': True,
-    #     'error_code': 403,
-    #     'error_message': 'It is less than 7 days since last time you shot. ',
-    #     'data': {'remaining_seconds': remaining_seconds}
-    #   }
     print(request.referrer)
     parser = reqparse.RequestParser()
     parser.add_argument('is_check', type=bool)
@@ -163,21 +138,10 @@ def remove_file(path):
 
 class VideoController(Resource):
   def delete(self, video_id):
-    print('video_id', video_id)
     media = abort_if_video_doesnt_exist(video_id)
 
     media_dir = os.path.dirname(media.uri)
     if_other_media_in_dir = traverse_dir_for_other_media(media_dir, int(video_id))
-    print('all_media_in_dir', if_other_media_in_dir)
-
-    # if_other_media_exist = False
-    # for f in all_media_in_dir:
-    #   if f.id != int(video_id):
-    #     print('f.id', f.id, type(f.id))
-    #     print('video_id', video_id, type(int(video_id)))
-    #     if_other_media_exist = True
-    #     break
-    # print('if_other_media_exist', if_other_media_exist)
 
     poster_file_path = media.poster_uri
     remove_file(poster_file_path)
