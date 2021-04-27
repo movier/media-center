@@ -157,7 +157,16 @@ class VideoController(Resource):
 
     media_dir = os.path.dirname(media.uri)
     all_media_in_dir = traverse_dir_for_media(media_dir)
-    # print('all_media_in_dir', all_media_in_dir)
+    print('all_media_in_dir', all_media_in_dir)
+
+    if_other_media_exist = False
+    for f in all_media_in_dir:
+      if f.id != int(video_id):
+        print('f.id', f.id, type(f.id))
+        print('video_id', video_id, type(int(video_id)))
+        if_other_media_exist = True
+        break
+    print('if_other_media_exist', if_other_media_exist)
 
     poster_file_path = media.poster_uri
     remove_file(poster_file_path)
