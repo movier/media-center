@@ -101,15 +101,25 @@ def traverse_dir(base_path):
     else:
       traverse_dir(path)
 
-def traverse_dir_for_media(dir):
-  result = []
+def traverse_dir_for_other_media(dir, media_id):
+  result = False
+
   for f in listdir(dir):
     path = join(dir, f)
     if isfile(path):
       query_media = g.db.query(Media).filter(Media.uri == path or Media.poster_uri == path).all()
-      result = result + (query_media)
+      print('query_media', query_media)
+      for m in query_media:
+        print('m', m)
+        if m.id != media_id:
+          result = True
+          print('True', m.id, media_id)
+          return True
+      # if result:
+        # break
     else:
-      traverse_dir_for_media(path)
+      return traverse_dir_for_other_media(path, media_id)
+
   return result
 
 # def check_last_shot_date():
@@ -153,20 +163,21 @@ def remove_file(path):
 
 class VideoController(Resource):
   def delete(self, video_id):
+    print('video_id', video_id)
     media = abort_if_video_doesnt_exist(video_id)
 
     media_dir = os.path.dirname(media.uri)
-    all_media_in_dir = traverse_dir_for_media(media_dir)
-    print('all_media_in_dir', all_media_in_dir)
+    if_other_media_in_dir = traverse_dir_for_other_media(media_dir, int(video_id))
+    print('all_media_in_dir', if_other_media_in_dir)
 
-    if_other_media_exist = False
-    for f in all_media_in_dir:
-      if f.id != int(video_id):
-        print('f.id', f.id, type(f.id))
-        print('video_id', video_id, type(int(video_id)))
-        if_other_media_exist = True
-        break
-    print('if_other_media_exist', if_other_media_exist)
+    # if_other_media_exist = False
+    # for f in all_media_in_dir:
+    #   if f.id != int(video_id):
+    #     print('f.id', f.id, type(f.id))
+    #     print('video_id', video_id, type(int(video_id)))
+    #     if_other_media_exist = True
+    #     break
+    # print('if_other_media_exist', if_other_media_exist)
 
     poster_file_path = media.poster_uri
     remove_file(poster_file_path)
