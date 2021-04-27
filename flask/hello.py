@@ -1,3 +1,4 @@
+import os, shutil
 from datetime import datetime
 from flask import Flask, request, g
 from flask_restful import Resource, Api, fields, reqparse, abort, marshal
@@ -7,7 +8,6 @@ from flask_cors import CORS
 from sqlalchemy import desc
 from os import listdir
 from os.path import isfile, join, splitext, getmtime
-import os
 from datetime import datetime
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
@@ -143,11 +143,11 @@ class VideoController(Resource):
     media_dir = os.path.dirname(media.uri)
     if_other_media_in_dir = traverse_dir_for_other_media(media_dir, int(video_id))
 
-    poster_file_path = media.poster_uri
-    remove_file(poster_file_path)
-    
-    video_file_path = media.uri
-    remove_file(video_file_path)
+    if if_other_media_in_dir:
+      remove_file(media.poster_uri)
+      remove_file(media.uri)
+    else:
+      shutil.rmtree(media_dir)
 
     g.db.delete(media)
     g.db.commit()
