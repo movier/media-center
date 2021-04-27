@@ -101,6 +101,17 @@ def traverse_dir(base_path):
     else:
       traverse_dir(path)
 
+def traverse_dir_for_media(dir):
+  result = []
+  for f in listdir(dir):
+    path = join(dir, f)
+    if isfile(path):
+      query_media = g.db.query(Media).filter(Media.uri == path or Media.poster_uri == path).all()
+      result = result + (query_media)
+    else:
+      traverse_dir_for_media(path)
+  return result
+
 # def check_last_shot_date():
 #   last_shot = g.db.query(Shot).order_by(Shot.id.desc()).first()
 #   if not last_shot: return
@@ -143,7 +154,11 @@ def remove_file(path):
 class VideoController(Resource):
   def delete(self, video_id):
     media = abort_if_video_doesnt_exist(video_id)
-    
+
+    media_dir = os.path.dirname(media.uri)
+    all_media_in_dir = traverse_dir_for_media(media_dir)
+    # print('all_media_in_dir', all_media_in_dir)
+
     poster_file_path = media.poster_uri
     remove_file(poster_file_path)
     
