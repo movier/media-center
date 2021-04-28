@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import '../../App.css';
 import { useDispatch } from 'react-redux';
 import { removeVideo } from './videoSlice';
+import { removeVideoFromPeople } from '../cast/castSlice';
 
 export default function VideoDetail(props) {
 
@@ -21,6 +22,7 @@ export default function VideoDetail(props) {
         method: 'DELETE'
       }).then(() => {
         dispatch(removeVideo(id));
+        dispatch(removeVideoFromPeople(id));
         props.history.goBack();
       });
     }
