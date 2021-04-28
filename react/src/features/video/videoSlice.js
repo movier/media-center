@@ -10,7 +10,7 @@ export const videoSlice = createSlice({
       state.list = action.payload;
     },
     removeVideo: (state, action) => {
-      state.list = state.list.filter(f => f.id === action.payload);
+      state.list = state.list.filter(f => f.id !== parseInt(action.payload));
     }
   },
 });
