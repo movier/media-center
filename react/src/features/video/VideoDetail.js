@@ -78,7 +78,7 @@ export default function VideoDetail(props) {
       </div>
       <div>
         <span>New Cast:</span>
-        <input type="text" value={newCast} onChange={e => setCast(e.target.value)} />
+        <input type="text" value={newCast} onChange={e => setNewCast(e.target.value)} />
         <button onClick={handleAddCastButtonClick}>Add Cast</button>
       </div>
       <div>
