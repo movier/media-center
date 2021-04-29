@@ -30,6 +30,7 @@ class Media(db.Model):
   size = db.Column(db.Integer)
   datetime = db.Column(db.DateTime, index=True)
   duration = db.Column(db.Float)
+  filename = db.Column(db.String)
   people = db.relationship(
     'People',
     secondary=media_people_table,
