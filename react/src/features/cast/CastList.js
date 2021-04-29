@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
 import './VideoList.css';
-import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
 import {
   saveCastListData,
   selectCastList,
  } from './castSlice';
+import MediaCell from '../../common/MediaCell';
 
 export default function CastList() {
 
@@ -30,16 +30,7 @@ export default function CastList() {
             <div style={{ color: 'white' }}>{name}</div>
             <div className="VideoList">
               {media.map((value, index) => {
-                const { uri, poster_uri, title, id, people } = value;
-                const castNames = people.map(m => m.name).join(',');
-                return (
-                  <div key={index}>
-                    <Link className="VideoList__link" to={`/watch?v=${uri}&id=${id}&cast=${castNames}`}>
-                      <img src={poster_uri} alt={title} />
-                      <p className="VideoList__title">{title}</p>
-                    </Link>
-                  </div>
-                );
+                return <MediaCell key={index} media={value} />;
               })}
             </div>
           </div>
