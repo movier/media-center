@@ -191,13 +191,10 @@ class FFmpegController(Resource):
     parser.add_argument('start')
     parser.add_argument('end')
     args = parser.parse_args()
-    input = args['input']
-    output = args['output']
+    input_file_path = args['input']
+    output_file_path = args['output']
     start = args['start']
     end = args['end']
-    input_file_path = g.path + input
-    output_file_path = g.path + output
-
     FMT = '%H:%M:%S'
     tdelta = datetime.strptime(end, FMT) - datetime.strptime(start, FMT)
     duration = str(tdelta)
