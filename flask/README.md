@@ -7,19 +7,35 @@ docker exec -it my-running-flask-app bash
 
 # Server Configuration
 
-1. Install dependencies
+* Install `git`, `python3`, `pip3`, `nginx`, `screen`
+
+* Create path `/mnt/sda4/jffs/` for the project
+
+* Clone project
+```bash
+git clone git@github.com:movier/media-center.git
 ```
+
+* Copy database `test.db` and `kids.db`
+```bash
+# sqlite3 test.db
+# .databases
+# .quit
+```
+
+* Install dependencies
+```bash
 pip3 install --no-cache-dir -r requirements.txt
 ```
 
-Check the path of python3
+* Update the path of python3 in `my-video-app-api.fcgi`
 
-2. Add executable permission to the file below
-```
+* Add executable permission to the file below
+```bash
 chmod +x /mnt/sda4/jffs/my-video-app/flask/my-video-app-api.fcgi
 ```
 
-3. Configure Nginx
+* Configure Nginx, set root as user
 ```
  location = /api { rewrite ^ /api/ last; }
     location /api { try_files $uri @my-video-app-api; }
@@ -32,7 +48,7 @@ chmod +x /mnt/sda4/jffs/my-video-app/flask/my-video-app-api.fcgi
     }
 ```
 
-4. Running FastCGI Process
+* Running FastCGI Process
 ```
 /mnt/sda4/jffs/my-video-app/flask/my-video-app-api.fcgi &
 ```
