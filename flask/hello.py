@@ -3,7 +3,7 @@ from datetime import datetime
 from flask import Flask, request, g
 from flask_restful import Resource, Api, fields, reqparse, abort, marshal
 # from database import db_session, db_session2
-from manage import Media, Shot, People
+from manage import Media, Shot, People, AndroidRelease
 from flask_cors import CORS
 from sqlalchemy import desc
 from os import listdir
@@ -39,6 +39,12 @@ cast_fields_res = {
   'id': fields.Integer,
   'name': fields.String,
   'media': fields.List(fields.Nested(resource_fields))
+}
+android_release_fields_res = {
+  'id': fields.Integer,
+  'version_name': fields.String,
+  'version_code': fields.Integer,
+  'created_at': fields.DateTime(dt_format='iso8601'),
 }
 
 def is_kids_video(url):
@@ -183,6 +189,11 @@ class CastController(Resource):
     result = g.db.query(People).all()
     return marshal(result, cast_fields_res), 200
 
+class AndroidReleaseController(Resource):
+  def get(self):
+    result = g.db.query(AndroidRelease).order_by(AndroidRelease.version_code.desc()).first()
+    return marshal(result, android_release_fields_res), 200
+
 class FFmpegController(Resource):
   def post(self):
     parser = reqparse.RequestParser()
@@ -207,6 +218,7 @@ api.add_resource(FFmpegController, '/ffmpeg')
 api.add_resource(VideoController, '/videos/<video_id>')
 api.add_resource(ShotList, '/shots')
 api.add_resource(CastController, '/cast')
+api.add_resource(AndroidReleaseController, '/android')
 api.add_resource(HelloWorld, '/')
 
 @app.before_request
