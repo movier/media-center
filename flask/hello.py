@@ -193,6 +193,17 @@ class AndroidReleaseController(Resource):
   def get(self):
     result = g.db.query(AndroidRelease).order_by(AndroidRelease.version_code.desc()).first()
     return marshal(result, android_release_fields_res), 200
+  # def post(self):
+  #   parser = reqparse.RequestParser()
+  #   parser.add_argument('version_name')
+  #   parser.add_argument('version_code')
+  #   args = parser.parse_args()
+  #   version_name = args['version_name']
+  #   version_code = args['version_code']
+  #   new_android_release = AndroidRelease(version_name=version_name, version_code=version_code)
+  #   g.db.add(new_android_release)
+  #   g.db.commit()
+  #   return True, 200
 
 class FFmpegController(Resource):
   def post(self):
