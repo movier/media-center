@@ -5,8 +5,8 @@ from flask_script import Manager
 from flask_migrate import Migrate, MigrateCommand
 
 app = Flask(__name__)
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////mnt/sda4/jffs/my-video-app/flask/test.db'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////mnt/sda4/jffs/my-video-app/flask/kids.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////mnt/sda4/jffs/my-video-app/flask/test.db'
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////mnt/sda4/jffs/my-video-app/flask/kids.db'
 
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
@@ -50,6 +50,14 @@ class Shot(db.Model):
 
   id = db.Column(db.Integer, primary_key=True, index=True)
   created_date = db.Column(db.DateTime, default=datetime.datetime.utcnow)
+
+class AndroidRelease(db.Model):
+  __tablename__ = 'android_release'
+
+  id = db.Column(db.Integer, primary_key=True, index=True)
+  version_name = db.Column(db.String)
+  version_code = db.Column(db.Integer)
+  created_at = db.Column(db.DateTime, default=datetime.datetime.utcnow)
 
 if __name__ == '__main__':
     manager.run()
