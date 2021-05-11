@@ -57,6 +57,7 @@ class AndroidRelease(db.Model):
   id = db.Column(db.Integer, primary_key=True, index=True)
   version_name = db.Column(db.String)
   version_code = db.Column(db.Integer)
+  download_url = db.Column(db.String)
   created_at = db.Column(db.DateTime, default=datetime.datetime.utcnow)
 
 if __name__ == '__main__':

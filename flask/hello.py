@@ -44,6 +44,7 @@ android_release_fields_res = {
   'id': fields.Integer,
   'version_name': fields.String,
   'version_code': fields.Integer,
+  'download_url': fields.String,
   'created_at': fields.DateTime(dt_format='iso8601'),
 }
 
