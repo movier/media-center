@@ -71,7 +71,7 @@ def get_static_path():
   if is_kids_video(request.referrer):
     return "/mnt/sda4/data/kids"
   return "/mnt/sda4/data/AI"
-
+# Test
 def traverse_dir(base_path):
   for f in listdir(base_path):
     path = join(base_path, f)
