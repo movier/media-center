@@ -28,6 +28,11 @@ docker-compose up
 ```
 open http://localhost:9000 and http://localhost:9001 to visit these two websites
 
+如果是首次运行，使用下面命令迁移数据库：
+```
+python manage.py db upgrade
+```
+
 ## Access backend container
 ```
 docker exec -it my-running-flask-app bash
