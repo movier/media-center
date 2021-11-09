@@ -10,7 +10,8 @@ def traverse_dir(base_path):
         path = join(base_path, f)
         if isfile(path):
             title, ext = splitext(f)
-            if ext == ".mp4" and not f.startswith("._"):
+            # if ext == ".mp4" and not f.startswith("._"):
+            if not f.startswith("._"):
                 title = "".join(title)
                 uri = path[len(mypath):]
                 root, ext1 = splitext(uri)
