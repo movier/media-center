@@ -1,5 +1,5 @@
 import os, sys, subprocess
-from manage import db, Media
+# from manage import db, Media
 from datetime import datetime
 
 base_path = "/mnt/sda4/data/kids"
@@ -21,15 +21,15 @@ def get_datetime(filename):
   )
   return result.stdout.decode("utf-8").rstrip()
 
-for media in db.session.query(Media).all():
-  if os.path.isfile(media.uri):
-    duration = get_duration(media.uri)
-    media.duration = duration
+# for media in db.session.query(Media).all():
+#   if os.path.isfile(media.uri):
+#     duration = get_duration(media.uri)
+#     media.duration = duration
 
-    creation_datetime = get_datetime(media.uri)
-    if creation_datetime:
-      media.datetime = datetime.strptime(creation_datetime, '%Y-%m-%dT%H:%M:%S.%fZ')
+#     creation_datetime = get_datetime(media.uri)
+#     if creation_datetime:
+#       media.datetime = datetime.strptime(creation_datetime, '%Y-%m-%dT%H:%M:%S.%fZ')
 
-    db.session.add(media)
+#     db.session.add(media)
 
-db.session.commit()
+# db.session.commit()
