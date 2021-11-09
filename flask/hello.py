@@ -108,16 +108,17 @@ def traverse_dir(base_path):
     else:
       traverse_dir(path)
 
-def traverse_dir_for_other_media(dir, media_id):
+# 遍历目录查找是否有其他文件
+def traverse_dir_for_other_media(dir, file_path):
   for f in listdir(dir):
     path = join(dir, f)
-    if isfile(path):
-      query_media = g.db.query(Media).filter(Media.uri == path or Media.poster_uri == path).all()
-      for m in query_media:
-        if m.id != media_id:
-          return True
+    if isfile(path) and path != file_path:
+      # query_media = g.db.query(Media).filter(Media.uri == path or Media.poster_uri == path).all()
+      # for m in query_media:
+      #   if m.id != media_id:
+        return True
     else:
-      return traverse_dir_for_other_media(path, media_id)
+      return traverse_dir_for_other_media(path, file_path)
 
 class HelloWorld(Resource):
   def get(self):
@@ -148,7 +149,7 @@ class VideoController(Resource):
     media = abort_if_video_doesnt_exist(video_id)
 
     media_dir = os.path.dirname(media.uri)
-    if_other_media_in_dir = traverse_dir_for_other_media(media_dir, int(video_id))
+    if_other_media_in_dir = traverse_dir_for_other_media(media_dir, media.uri)
 
     if if_other_media_in_dir:
       remove_file(media.poster_uri)
