@@ -1,3 +1,4 @@
+import subprocess
 from os import listdir
 from os.path import isfile, join, splitext, getmtime, getsize
 from datetime import datetime
@@ -13,9 +14,19 @@ def traverse_dir(base_path):
             # if ext == ".mp4" and not f.startswith("._"):
             if not f.startswith("._"):
                 title = "".join(title)
-                uri = path[len(mypath):]
-                root, ext1 = splitext(uri)
+                # uri = path[len(mypath):]
+                root, ext1 = splitext(path)
                 poster_uri = "".join(root) + ".jpg"
+                
+                # Generate thumbnail if necessary
+                if not isfile(poster_uri):
+                    if ext == ".mp4":
+                        subprocess.run(
+                            ["ffmpeg", "-i", path, "-ss", "00:00:01.000", "-vframes", "1", poster_uri],
+                            stdout=subprocess.PIPE,
+                            stderr=subprocess.STDOUT,
+                        )
+                
                 mtimestamp = getmtime(path)
                 mdatetime = datetime.fromtimestamp(mtimestamp).isoformat()
                 file_size = getsize(path)
@@ -29,7 +40,7 @@ def traverse_dir(base_path):
 
                 print(dict(
                     title=title,
-                    uri=uri,
+                    uri=path,
                     poster_uri=poster_uri,
                     created_at=mdatetime,
                     media_type=1,
