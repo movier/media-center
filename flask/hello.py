@@ -117,6 +117,8 @@ def traverse_dir_for_other_media(dir, file_path):
       # for m in query_media:
       #   if m.id != media_id:
         return True
+    elif path == file_path:
+      continue
     else:
       return traverse_dir_for_other_media(path, file_path)
 
@@ -155,7 +157,8 @@ class VideoController(Resource):
       remove_file(media.poster_uri)
       remove_file(media.uri)
     else:
-      shutil.rmtree(media_dir)
+      if media_dir != get_static_path():
+        shutil.rmtree(media_dir)
 
     g.db.delete(media)
     g.db.commit()
