@@ -14,6 +14,7 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 from math import floor
 from update_duration_and_datetime import get_datetime, get_duration
+from traverse_dir import fini
 
 app = Flask(__name__)
 CORS(app)
@@ -71,42 +72,49 @@ def get_static_path():
   if is_kids_video(request.referrer):
     return "/mnt/sda4/data/kids"
   return "/mnt/sda4/data/AI"
-# Test
-def traverse_dir(base_path):
-  for f in listdir(base_path):
-    path = join(base_path, f)
-    if isfile(path):
-      title, ext = splitext(f)
-      if not f.startswith("._"):
-        title = "".join(title)
-        # uri = path[len(g.path):]
-        root, ext1 = splitext(path)
-        poster_uri = "".join(root) + ".jpg"
-        mtimestamp = getmtime(path)
-        mdatetime = datetime.fromtimestamp(mtimestamp)
-        file_size = os.path.getsize(path)
-        query_existing_video = g.db.query(Media).filter(Media.title == title).count()
-        if query_existing_video == 0:
-          duration = get_duration(path)
-          
-          creation_datetime = get_datetime(path)
-          media_datetime = None
-          if creation_datetime:
-            media_datetime = datetime.strptime(creation_datetime, '%Y-%m-%dT%H:%M:%S.%fZ')
 
-          v = Media(
-            title=title,
-            uri=path,
-            poster_uri=poster_uri,
-            created_at=mdatetime,
-            media_type=1,
-            size=file_size,
-            duration=duration,
-            datetime=media_datetime,
-          )
-          g.db.add(v)
-    else:
-      traverse_dir(path)
+def check_media_exist(filename):
+  query_existing_video = g.db.query(Media).filter(Media.filename == filename).count()
+  if query_existing_video == 0:
+    return False
+  return True
+
+# Test
+# def traverse_dir(base_path):
+#   for f in listdir(base_path):
+#     path = join(base_path, f)
+#     if isfile(path):
+#       title, ext = splitext(f)
+#       if not f.startswith("._"):
+#         title = "".join(title)
+#         # uri = path[len(g.path):]
+#         root, ext1 = splitext(path)
+#         poster_uri = "".join(root) + ".jpg"
+#         mtimestamp = getmtime(path)
+#         mdatetime = datetime.fromtimestamp(mtimestamp)
+#         file_size = os.path.getsize(path)
+#         query_existing_video = g.db.query(Media).filter(Media.title == title).count()
+#         if query_existing_video == 0:
+#           duration = get_duration(path)
+          
+#           creation_datetime = get_datetime(path)
+#           media_datetime = None
+#           if creation_datetime:
+#             media_datetime = datetime.strptime(creation_datetime, '%Y-%m-%dT%H:%M:%S.%fZ')
+
+#           v = Media(
+#             title=title,
+#             uri=path,
+#             poster_uri=poster_uri,
+#             created_at=mdatetime,
+#             media_type=1,
+#             size=file_size,
+#             duration=duration,
+#             datetime=media_datetime,
+#           )
+#           g.db.add(v)
+#     else:
+#       traverse_dir(path)
 
 # 遍历目录查找是否有其他文件
 def traverse_dir_for_other_media(dir, file_path):
@@ -129,8 +137,7 @@ class HelloWorld(Resource):
     parser.add_argument('is_check', type=bool)
     args = parser.parse_args()
     if args['is_check']:
-      traverse_dir(g.path)
-      g.db.commit()
+      fini(g.path, True)
     result = g.db.query(Media).order_by(desc(Media.created_at)).all()
     return marshal(result, resource_fields), 200
 
