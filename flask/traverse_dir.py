@@ -5,14 +5,12 @@ from datetime import datetime
 from update_duration_and_datetime import get_datetime, get_duration
 from manage import db, Media
 
-mypath = "/mnt/sda4/data/kids" # dynamic
-
-def fini(aa, bb = None):
+def fini(aa, db, bb = None):
   list = []
-  def traverse_dir(base_path, _check_exist_function = None):
+  def traverse_dir(base_path, db, _check_exist_function = None):
     for f in listdir(base_path):
       if _check_exist_function:
-        query_existing_video = db.session.query(Media).filter(Media.filename == f).count()
+        query_existing_video = db.query(Media).filter(Media.filename == f).count()
         if query_existing_video > 0:
           continue
       path = join(base_path, f)
@@ -73,16 +71,13 @@ def fini(aa, bb = None):
               duration=duration,
               filename=f,
             )
-            db.session.add(v)
+            db.add(v)
         else:
-          traverse_dir(path, _check_exist_function)
+          traverse_dir(path, db, _check_exist_function)
 
-  traverse_dir(aa, bb)
+  traverse_dir(aa, db, bb)
 
   if bb:
-    db.session.commit()
+    db.commit()
   
   return list
-
-
-print(fini(mypath))

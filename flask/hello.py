@@ -137,7 +137,7 @@ class HelloWorld(Resource):
     parser.add_argument('is_check', type=bool)
     args = parser.parse_args()
     if args['is_check']:
-      fini(g.path, True)
+      fini(g.path, g.db, True)
     result = g.db.query(Media).order_by(desc(Media.created_at)).all()
     return marshal(result, resource_fields), 200
 
