@@ -72,8 +72,8 @@ def fini(aa, db, bb = None):
               filename=f,
             )
             db.add(v)
-        else:
-          traverse_dir(path, db, _check_exist_function)
+      else:
+        traverse_dir(path, db, _check_exist_function)
 
   traverse_dir(aa, db, bb)
 
