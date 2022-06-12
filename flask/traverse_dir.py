@@ -22,6 +22,10 @@ def fini(aa, db, bb = None):
           root, ext1 = splitext(path)
           poster_uri = "".join(root) + ".jpg"
                 
+          # An image could be a poster of a video
+          if f.lower().endswith(('.jpg', '.jpeg')) and isfile("".join(root) + ".mp4"):
+            continue
+
           # Generate thumbnail if necessary
           if not isfile(poster_uri):
             if ext == ".mp4":
