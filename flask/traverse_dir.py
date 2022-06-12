@@ -16,8 +16,7 @@ def fini(aa, db, bb = None):
       path = join(base_path, f)
       if isfile(path):
         title, ext = splitext(f)
-        # if ext == ".mp4" and not f.startswith("._"):
-        if not f.startswith("._"):
+        if f.lower().endswith(('.mp4', '.jpg', '.jpeg')) and not f.startswith("._"):
           title = "".join(title)
           # uri = path[len(mypath):]
           root, ext1 = splitext(path)
@@ -46,6 +45,7 @@ def fini(aa, db, bb = None):
           print('media datetime', media_datetime)
 
           duration = get_duration(path)
+          # print('duration', duration)
 
           list.append(dict(
             title=title,
