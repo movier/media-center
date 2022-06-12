@@ -157,18 +157,19 @@ class VideoController(Resource):
   def delete(self, video_id):
     media = abort_if_video_doesnt_exist(video_id)
 
-    media_dir = os.path.dirname(media.uri)
-    if_other_media_in_dir = traverse_dir_for_other_media(media_dir, media.uri)
-
-    if if_other_media_in_dir:
-      remove_file(media.poster_uri)
-      remove_file(media.uri)
-    else:
-      if media_dir != get_static_path():
-        shutil.rmtree(media_dir)
+    remove_file(media.poster_uri)
+    remove_file(media.uri)
 
     g.db.delete(media)
     g.db.commit()
+
+    media_dir = os.path.dirname(media.uri)
+    if os.path.exists(media_dir):
+      if_other_media_in_dir = traverse_dir_for_other_media(media_dir, media.uri)
+
+      if not if_other_media_in_dir:
+        if media_dir != get_static_path():
+          shutil.rmtree(media_dir)
 
     return '', 204
   
