@@ -40,6 +40,7 @@ export default function ({ media }) {
     <div>
       <Link className="VideoList__link" to={`/watch?v=${uri}&id=${id}&cast=${peopleNames}`}>
         <img src={poster_uri} alt={title} />
+        <p className="VideoList__title">1</p>
         <p className="VideoList__title">{title}</p>
         <p className="VideoList__title">{created_at}</p>
         <p className="VideoList__title">{humanFileSize(size, true)}</p>
