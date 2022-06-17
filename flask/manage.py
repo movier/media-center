@@ -26,7 +26,7 @@ class Media(db.Model):
   uri = db.Column(db.String)
   poster_uri = db.Column(db.String)
   created_at = db.Column(db.DateTime, index=True)
-  media_type = db.Column(db.Integer) # 1 for video, 2 for photo, 3 for live_photo
+  media_type = db.Column(db.Integer) # 0 for unknown, 1 for photo, 2 for video
   size = db.Column(db.Integer)
   datetime = db.Column(db.DateTime, index=True)
   duration = db.Column(db.Float)

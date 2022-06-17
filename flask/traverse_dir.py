@@ -4,6 +4,7 @@ from os.path import isfile, join, splitext, getmtime, getsize
 from datetime import datetime
 from update_duration_and_datetime import get_datetime, get_duration
 from manage import db, Media
+from utils import get_media_type
 
 def fini(aa, db, bb = None):
   list = []
@@ -49,14 +50,15 @@ def fini(aa, db, bb = None):
           print('media datetime', media_datetime)
 
           duration = get_duration(path)
-          # print('duration', duration)
+          
+          media_type = get_media_type(f)
 
           list.append(dict(
             title=title,
             uri=path,
             poster_uri=poster_uri,
             created_at=mdatetime.isoformat(),
-            media_type=1,
+            media_type=media_type,
             size=file_size,
             datetime=creation_datetime,
             duration=duration,
@@ -69,7 +71,7 @@ def fini(aa, db, bb = None):
               uri=path,
               poster_uri=poster_uri,
               created_at=mdatetime,
-              media_type=1,
+              media_type=media_type,
               size=file_size,
               datetime=media_datetime,
               duration=duration,
