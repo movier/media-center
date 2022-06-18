@@ -154,6 +154,10 @@ def remove_file(path):
     print('The file does not exist')
 
 class MediaController(Resource):
+  def get(self, media_id):
+    media = abort_if_video_doesnt_exist(media_id)
+    return marshal(media, resource_fields), 200
+
   def delete(self, media_id):
     media = abort_if_video_doesnt_exist(media_id)
 
