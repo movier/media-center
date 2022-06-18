@@ -56,7 +56,7 @@ server {
         try_files $uri $uri/ /index.html;
     }
 
-    location ~ \.(mp4|jpg)$ {
+    location ~ \.(MOV|PNG|JPG|JPEG|MP4|mov|png|jpg|jpeg|mp4)$ {
         root /mnt/sda4/data/AI;
     }
 
