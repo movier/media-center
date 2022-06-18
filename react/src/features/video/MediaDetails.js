@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../../App.css';
 import { useDispatch } from 'react-redux';
 import { removeVideo } from './videoSlice';
@@ -13,6 +13,15 @@ export default function MediaDetails(props) {
   const [newCast, setNewCast] = useState('');
   const [start, setStart] = useState('');
   const [end, setEnd] = useState('');
+  const [mediaDetails, setMediaDetails] = useState(null);
+
+  useEffect(() => {
+    fetch(`/api/media/${id}`)
+      .then(response => response.json())
+      .then(data => {
+        setMediaDetails(data);
+      });
+  }, []);
 
   const dispatch = useDispatch();
 
@@ -67,11 +76,25 @@ export default function MediaDetails(props) {
     });
   }
 
+  function renderMedia(media) {
+    switch (media.media_type) {
+      case 1:
+        return <img src={media.uri} />;
+      case 2:
+        return (
+          <video controls autoPlay>
+            <source src={searchParams.get('v')} />
+          </video>
+        );
+      default:
+        return <h1>Unknown Media Type</h1>; 
+    }
+  }
+
+  if (!mediaDetails) return null;
   return (
     <>
-      <video controls autoPlay>
-        <source src={searchParams.get('v')} />
-      </video>
+      {renderMedia(mediaDetails)} 
       <button onClick={handleDeleteButtonClicked}>Delete</button>
       <div>
         {cast.map((m, i) => (
