@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import VideoList from './features/video/VideoList';
-import VideoDetail from './features/video/VideoDetail';
+import MediaDetails from './features/video/MediaDetails';
 import RemainingTime from './RemainingTime';
 import CastList from './features/cast/CastList';
 
@@ -10,7 +10,7 @@ function BasicExample() {
     <Router>
       <div>
         <Route exact path="/" component={VideoList} />
-        <Route path="/watch" component={VideoDetail} />
+        <Route path="/watch" component={MediaDetails} />
         <Route path="/topics" component={Topics} />
         <Route path="/remaining-time" component={RemainingTime} />
         <Route path="/cast" component={CastList} />

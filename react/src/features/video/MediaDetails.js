@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { removeVideo } from './videoSlice';
 import { removeVideoFromPeople } from '../cast/castSlice';
 
-export default function VideoDetail(props) {
+export default function MediaDetails(props) {
 
   const searchParams = new URLSearchParams(props.location.search);
   const id = searchParams.get('id');
@@ -18,7 +18,7 @@ export default function VideoDetail(props) {
 
   const handleDeleteButtonClicked = () => {
     if (window.confirm("Are you sure to delete this video?")) {
-      fetch(`/api/videos/${id}`, {
+      fetch(`/api/media/${id}`, {
         method: 'DELETE'
       }).then(() => {
         dispatch(removeVideo(id));
@@ -31,7 +31,7 @@ export default function VideoDetail(props) {
   const handleAddCastButtonClick = () => {
     if (!newCast) return;
     const data = { cast_name: newCast };
-    fetch(`/api/videos/${id}`, {
+    fetch(`/api/media/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',

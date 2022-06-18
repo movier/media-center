@@ -141,10 +141,10 @@ class HelloWorld(Resource):
     result = g.db.query(Media).order_by(desc(Media.created_at)).all()
     return marshal(result, resource_fields), 200
 
-def abort_if_video_doesnt_exist(video_id):
-  media = g.db.query(Media).get(video_id)
+def abort_if_video_doesnt_exist(media_id):
+  media = g.db.query(Media).get(media_id)
   if not media:
-    abort(404, message="Media {} doesn't exist".format(video_id))
+    abort(404, message="Media {} doesn't exist".format(media_id))
   return media
 
 def remove_file(path):
@@ -153,9 +153,9 @@ def remove_file(path):
   else:
     print('The file does not exist')
 
-class VideoController(Resource):
-  def delete(self, video_id):
-    media = abort_if_video_doesnt_exist(video_id)
+class MediaController(Resource):
+  def delete(self, media_id):
+    media = abort_if_video_doesnt_exist(media_id)
 
     remove_file(media.poster_uri)
     remove_file(media.uri)
@@ -173,7 +173,7 @@ class VideoController(Resource):
 
     return '', 204
   
-  def put(self, video_id):
+  def put(self, media_id):
     parser = reqparse.RequestParser()
     parser.add_argument('cast_name')
     args = parser.parse_args()
@@ -185,7 +185,7 @@ class VideoController(Resource):
     else:
       c = People(name=cast_name)
 
-    v = g.db.query(Media).get(video_id)
+    v = g.db.query(Media).get(media_id)
     v.people.append(c)
     g.db.add(v)
     g.db.commit()
@@ -239,7 +239,7 @@ class FFmpegController(Resource):
     return '', 201
 
 api.add_resource(FFmpegController, '/ffmpeg')
-api.add_resource(VideoController, '/videos/<video_id>')
+api.add_resource(MediaController, '/media/<media_id>')
 api.add_resource(ShotList, '/shots')
 api.add_resource(CastController, '/cast')
 api.add_resource(AndroidReleaseController, '/android')
