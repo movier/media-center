@@ -34,17 +34,20 @@ import { Link } from "react-router-dom";
 }
 
 export default function ({ media }) {
-  const { uri, poster_uri, title, id, people, created_at, size, datetime, duration } = media;
+  const { uri, poster_uri, title, id, people, created_at, size, datetime, duration, media_type} = media;
   const peopleNames = people.map(m => m.name).join(',');
   return (
     <div>
       <Link className="VideoList__link" to={`/watch?v=${uri}&id=${id}&cast=${peopleNames}`}>
-        <img src={poster_uri} alt={title} />
-        <p className="VideoList__title">{title}</p>
+        <div style={{ position: 'relative' }}>
+          <img src={poster_uri} alt={title} />
+          {media_type == 2 && <div style={{ position: 'absolute', top: 10, right: 10, color: 'white', fontSize: 12, fontWeight: 'bold' }}>{new Date(Math.ceil(duration) * 1000).toISOString().substr(11, 8)}</div>}
+        </div>
+        {/* <p className="VideoList__title">{title}</p>
         <p className="VideoList__title">{created_at}</p>
         <p className="VideoList__title">{humanFileSize(size, true)}</p>
         <p className="VideoList__title">{datetime}</p>
-        <p className="VideoList__title">{new Date(Math.ceil(duration) * 1000).toISOString().substr(11, 8)}</p>
+        <p className="VideoList__title">{new Date(Math.ceil(duration) * 1000).toISOString().substr(11, 8)}</p> */}
       </Link>
     </div>
   );
