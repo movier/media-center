@@ -94,27 +94,29 @@ export default function MediaDetails(props) {
 
   if (!mediaDetails) return null;
   return (
-    <>
-      {renderMedia(mediaDetails)} 
-      <button onClick={handleDeleteButtonClicked}>Delete</button>
-      <div>
-        {cast.map((m, i) => (
-          <span style={{ marginRight: 10 }} key={i}>{m}</span>
-        ))}
+    <div className="media-container">
+      {renderMedia(mediaDetails)}
+      <div className='operation-container'>
+        <button onClick={handleDeleteButtonClicked}>Delete</button>
+        <div>
+          {cast.map((m, i) => (
+            <span style={{ marginRight: 10 }} key={i}>{m}</span>
+          ))}
+        </div>
+        <div>
+          <span>New Cast:</span>
+          <input type="text" value={newCast} onChange={e => setNewCast(e.target.value)} />
+          <button onClick={handleAddCastButtonClick}>Add Cast</button>
+        </div>
+        <div>
+          <span>Start:</span>
+          <input type="text" value={start} onChange={e => setStart(e.target.value)} />
+          <span>End:</span>
+          <input type="text" value={end} onChange={e => setEnd(e.target.value)} />
+          <button onClick={handleConfirmButtonClick}>Confirm</button>
+        </div>
       </div>
-      <div>
-        <span>New Cast:</span>
-        <input type="text" value={newCast} onChange={e => setNewCast(e.target.value)} />
-        <button onClick={handleAddCastButtonClick}>Add Cast</button>
-      </div>
-      <div>
-        <span>Start:</span>
-        <input type="text" value={start} onChange={e => setStart(e.target.value)} />
-        <span>End:</span>
-        <input type="text" value={end} onChange={e => setEnd(e.target.value)} />
-        <button onClick={handleConfirmButtonClick}>Confirm</button>
-      </div>
-    </>
+    </div>
   );
 
 }

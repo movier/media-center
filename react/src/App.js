@@ -8,13 +8,11 @@ import CastList from './features/cast/CastList';
 function BasicExample() {
   return (
     <Router>
-      <div>
-        <Route exact path="/" component={VideoList} />
-        <Route path="/watch" component={MediaDetails} />
-        <Route path="/topics" component={Topics} />
-        <Route path="/remaining-time" component={RemainingTime} />
-        <Route path="/cast" component={CastList} />
-      </div>
+      <Route exact path="/" component={VideoList} />
+      <Route path="/watch" component={MediaDetails} />
+      <Route path="/topics" component={Topics} />
+      <Route path="/remaining-time" component={RemainingTime} />
+      <Route path="/cast" component={CastList} />
     </Router>
   );
 }
