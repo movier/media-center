@@ -3,6 +3,7 @@ import '../../App.css';
 import { useDispatch } from 'react-redux';
 import { removeVideo } from './videoSlice';
 import { removeVideoFromPeople } from '../cast/castSlice';
+import './MediaDetails.css';
 
 export default function MediaDetails(props) {
 
@@ -79,10 +80,10 @@ export default function MediaDetails(props) {
   function renderMedia(media) {
     switch (media.media_type) {
       case 1:
-        return <img src={media.uri} />;
+        return <img className="media" src={media.uri} />;
       case 2:
         return (
-          <video controls autoPlay>
+          <video className="media" controls autoPlay>
             <source src={searchParams.get('v')} />
           </video>
         );
