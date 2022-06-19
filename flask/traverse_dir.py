@@ -4,7 +4,7 @@ from os.path import isfile, join, splitext, getmtime, getsize
 from datetime import datetime
 from update_duration_and_datetime import get_datetime, get_duration
 from manage import db, Media
-from utils import get_media_type
+from utils import get_media_type, get_image_metadata
 
 def fini(aa, db, bb = None):
   list = []
@@ -40,19 +40,27 @@ def fini(aa, db, bb = None):
           mdatetime = datetime.fromtimestamp(mtimestamp)
           file_size = getsize(path)
 
-          creation_datetime = get_datetime(path)
+          media_type = get_media_type(f)
+
+          creation_datetime = None
+          if media_type == 1:
+            meta_data = get_image_metadata(path)
+            creation_datetime = meta_data['DateTime']
+          elif media_type == 2:
+            creation_datetime = get_datetime(path)
           
+          # print('creation datetime', creation_datetime) 
           media_datetime = None
           if creation_datetime:
-            media_datetime = datetime.strptime(creation_datetime, '%Y-%m-%dT%H:%M:%S.%fZ')
+            if media_type == 1:
+              media_datetime = datetime.strptime(creation_datetime, '%Y:%m:%d %H:%M:%S')
+            elif media_type == 2:
+              media_datetime = datetime.strptime(creation_datetime, '%Y-%m-%dT%H:%M:%S.%fZ')
           else:
             media_datetime = mdatetime
-          print('media datetime', media_datetime)
 
           duration = get_duration(path)
           
-          media_type = get_media_type(f)
-
           list.append(dict(
             title=title,
             uri=path,
@@ -60,7 +68,7 @@ def fini(aa, db, bb = None):
             created_at=mdatetime.isoformat(),
             media_type=media_type,
             size=file_size,
-            datetime=creation_datetime,
+            datetime=media_datetime,
             duration=duration,
             filename=f,
           ))
