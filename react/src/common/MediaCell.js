@@ -45,8 +45,8 @@ export default function ({ media }) {
           <span style={{ marginLeft: 4 }} class="material-symbols-outlined">play_circle</span>
           </div>}
           <div style={{ position: 'absolute', bottom: 10, left: 10, color: 'white', fontSize: 12, fontWeight: 'bold' }}>
-            <p className="VideoList__title">{created_at}</p>
-            <p className="VideoList__title">{datetime}</p>
+            {/* <p className="VideoList__title">{created_at.replace('T', ' ').slice(0, 16)}</p> */}
+            <p className="VideoList__title">{datetime.replace('T', ' ').slice(0, 16)}</p>
           </div>
         </div>
         {/* <p className="VideoList__title">{title}</p> */}
