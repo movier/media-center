@@ -41,7 +41,9 @@ export default function ({ media }) {
       <Link className="VideoList__link" to={`/watch?v=${uri}&id=${id}&cast=${peopleNames}`}>
         <div style={{ position: 'relative' }}>
           <img src={poster_uri} alt={title} />
-          {media_type == 2 && <div style={{ position: 'absolute', top: 10, right: 10, color: 'white', fontSize: 12, fontWeight: 'bold' }}>{new Date(Math.ceil(duration) * 1000).toISOString().substr(11, 8)}</div>}
+          {media_type == 2 && <div style={{ display: 'flex', alignItems: 'center', position: 'absolute', top: 10, right: 10, color: 'white', fontSize: 12, fontWeight: 'bold' }}>{new Date(Math.ceil(duration) * 1000).toISOString().substr(11, 8)}
+          <span style={{ marginLeft: 4 }} class="material-symbols-outlined">play_circle</span>
+          </div>}
         </div>
         {/* <p className="VideoList__title">{title}</p>
         <p className="VideoList__title">{created_at}</p>
