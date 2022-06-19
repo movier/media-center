@@ -92,13 +92,24 @@ export default function MediaDetails(props) {
     }
   }
 
+  function handleBackBtnClicked() {
+    props.history.goBack();
+  }
+
   if (!mediaDetails) return null;
   return (
     <div className="media-container">
       {renderMedia(mediaDetails)}
       <div className='operation-container'>
-        <button onClick={handleDeleteButtonClicked}>Delete</button>
-        <div>
+        <div className="operation-container__inner">
+          <div className="icon-container" onClick={handleBackBtnClicked}>
+            <span class="material-symbols-outlined">arrow_back</span>
+          </div>
+          <div className="icon-container" onClick={handleDeleteButtonClicked}>
+            <span className="material-symbols-outlined">delete</span>
+          </div>
+        </div>
+        {/* <div>
           {cast.map((m, i) => (
             <span style={{ marginRight: 10 }} key={i}>{m}</span>
           ))}
@@ -114,7 +125,7 @@ export default function MediaDetails(props) {
           <span>End:</span>
           <input type="text" value={end} onChange={e => setEnd(e.target.value)} />
           <button onClick={handleConfirmButtonClick}>Confirm</button>
-        </div>
+        </div> */}
       </div>
     </div>
   );
