@@ -44,12 +44,14 @@ export default function ({ media }) {
           {media_type == 2 && <div style={{ display: 'flex', alignItems: 'center', position: 'absolute', top: 10, right: 10, color: 'white', fontSize: 12, fontWeight: 'bold' }}>{new Date(Math.ceil(duration) * 1000).toISOString().substr(11, 8)}
           <span style={{ marginLeft: 4 }} class="material-symbols-outlined">play_circle</span>
           </div>}
+          <div style={{ position: 'absolute', bottom: 10, left: 10, color: 'white', fontSize: 12, fontWeight: 'bold' }}>
+            <p className="VideoList__title">{created_at}</p>
+            <p className="VideoList__title">{datetime}</p>
+          </div>
         </div>
-        {/* <p className="VideoList__title">{title}</p>
-        <p className="VideoList__title">{created_at}</p>
-        <p className="VideoList__title">{humanFileSize(size, true)}</p>
-        <p className="VideoList__title">{datetime}</p>
-        <p className="VideoList__title">{new Date(Math.ceil(duration) * 1000).toISOString().substr(11, 8)}</p> */}
+        {/* <p className="VideoList__title">{title}</p> */}
+        {/* <p className="VideoList__title">{humanFileSize(size, true)}</p> */}
+        {/* <p className="VideoList__title">{new Date(Math.ceil(duration) * 1000).toISOString().substr(11, 8)}</p> */}
       </Link>
     </div>
   );
