@@ -84,7 +84,7 @@ export default function MediaDetails(props) {
       case 2:
         return (
           <video className="media" controls autoPlay>
-            <source src={searchParams.get('v')} />
+            <source src={media.uri} />
           </video>
         );
       default:
@@ -103,7 +103,7 @@ export default function MediaDetails(props) {
       <div className='operation-container'>
         <div className="operation-container__inner">
           <div className="icon-container" onClick={handleBackBtnClicked}>
-            <span class="material-symbols-outlined">arrow_back</span>
+            <span className="material-symbols-outlined">arrow_back</span>
           </div>
           <div className="icon-container" onClick={handleDeleteButtonClicked}>
             <span className="material-symbols-outlined">delete</span>
