@@ -96,7 +96,7 @@ def get_image_metadata(uri):
   # print(f'Flash Details: {img.get("flash")}')
   return info_dict
 
-# get_image_metadata('/mnt/sda4/data/AI/20140904_212615.jpg')
+# print(get_image_metadata('/mnt/sda4/data/AI/MIAA-658.jpg'))
 
 def get_image_dimensions(uri):
   metadata = get_image_metadata(uri)
@@ -105,14 +105,17 @@ def get_image_dimensions(uri):
   image_height = metadata.get('pixel_y_dimension')
   return { 'width': image_width, 'height': image_height }
 
-# print(get_image_dimensions('/mnt/sda4/data/AI/IMG_3919.jpg'))
+# print(get_image_dimensions('/mnt/sda4/data/AI/MIAA-658.jpg'))
 
 def get_video_metadata(uri):
-  all_metadata = ffmpeg.probe(uri)["streams"]
   metadata = {}
-  for item in all_metadata:
-    for label in item:
-      metadata[label] = item.get(label)
+  try:
+    all_metadata = ffmpeg.probe(uri)["streams"]
+    for item in all_metadata:
+      for label in item:
+        metadata[label] = item.get(label)
+  except Exception as inst:
+    print(inst)
   return metadata
 
 # print(get_video_metadata('/mnt/sda4/data/AI/IMG_2825.mp4'))
