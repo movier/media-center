@@ -2,6 +2,7 @@ import subprocess
 from os.path import isfile
 # from PIL import Image
 # from PIL.ExifTags import TAGS
+from exif import Image
 
 # 0 for unknown, 1 for photo, 2 for video
 def get_media_type(filename):
@@ -52,3 +53,46 @@ def generate_poster_for_video(video):
 #     info_dict[tag] = data
   
 #   return info_dict
+
+def get_image_metadata(uri):
+  with open(uri, 'rb') as img_file:
+    img = Image(img_file)
+    
+  # print(img.has_exif)
+  
+  # List all EXIF tags contained in the image
+  # sorted(img.list_all())
+
+  # print(img.list_all())
+
+  info_dict = {}
+
+  for item in img.list_all():
+    try:
+      data = img.get(item)
+      info_dict[item] = data
+      # print(f'{item}: {data}')
+    except Exception as inst:
+      print(inst)
+
+  # print(info_dict)
+  # # Make of device which captured image
+  # print(f'Make: {img.get("make")}')
+
+  # # Model of device which captured image
+  # print(f'Model: {img.get("model")}')
+
+  # # Software involved in uploading and digitizing image
+  # print(f'Software: {img.get("software")}')
+
+  # # Name of photographer who took the image
+  # print(f'Artist: {img.get("artist")}')
+
+  # # Original datetime that image was taken (photographed)
+  # print(f'DateTime (Original): {img.get("datetime_original")}')
+
+  # # Details of flash function
+  # print(f'Flash Details: {img.get("flash")}')
+  return info_dict
+
+# get_image_metadata('/mnt/sda4/data/AI/20140904_212615.jpg')

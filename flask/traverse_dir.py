@@ -4,7 +4,7 @@ from os.path import isfile, join, splitext, getmtime, getsize
 from datetime import datetime
 from update_duration_and_datetime import get_datetime, get_duration
 from manage import db, Media
-from utils import get_media_type
+from utils import get_media_type, get_image_metadata
 
 def fini(aa, db, bb = None):
   list = []
@@ -44,7 +44,8 @@ def fini(aa, db, bb = None):
 
           creation_datetime = None
           if media_type == 1:
-            creation_datetime = None
+            meta_data = get_image_metadata(path)
+            creation_datetime = meta_data['datetime']
           elif media_type == 2:
             creation_datetime = get_datetime(path)
           
