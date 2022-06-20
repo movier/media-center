@@ -1,7 +1,7 @@
 import subprocess
 from os.path import isfile
-from PIL import Image
-from PIL.ExifTags import TAGS
+# from PIL import Image
+# from PIL.ExifTags import TAGS
 
 # 0 for unknown, 1 for photo, 2 for video
 def get_media_type(filename):
@@ -20,35 +20,35 @@ def generate_poster_for_video(video):
     stderr=subprocess.STDOUT,
   )
 
-def get_image_metadata(uri):
-  image = Image.open(uri)
+# def get_image_metadata(uri):
+#   image = Image.open(uri)
   
-  # extract other basic metadata
-  info_dict = {
-    "Filename": image.filename,
-    "Image Size": image.size,
-    "Image Height": image.height,
-    "Image Width": image.width,
-    "Image Format": image.format,
-    "Image Mode": image.mode,
-    "Image is Animated": getattr(image, "is_animated", False),
-    "Frames in Image": getattr(image, "n_frames", 1)
-  }
+#   # extract other basic metadata
+#   info_dict = {
+#     "Filename": image.filename,
+#     "Image Size": image.size,
+#     "Image Height": image.height,
+#     "Image Width": image.width,
+#     "Image Format": image.format,
+#     "Image Mode": image.mode,
+#     "Image is Animated": getattr(image, "is_animated", False),
+#     "Frames in Image": getattr(image, "n_frames", 1)
+#   }
   
-  # for label,value in info_dict.items():
-  #   print(f"{label:25}: {value}")
+#   # for label,value in info_dict.items():
+#   #   print(f"{label:25}: {value}")
 
-  # extract EXIF data
-  exifdata = image.getexif()
+#   # extract EXIF data
+#   exifdata = image.getexif()
 
-  # iterating over all EXIF data fields
-  for tag_id in exifdata:
-    # get the tag name, instead of human unreadable tag id
-    tag = TAGS.get(tag_id, tag_id)
-    data = exifdata.get(tag_id)
-    # decode bytes 
-    if isinstance(data, bytes):
-        data = data.decode()
-    info_dict[tag] = data
+#   # iterating over all EXIF data fields
+#   for tag_id in exifdata:
+#     # get the tag name, instead of human unreadable tag id
+#     tag = TAGS.get(tag_id, tag_id)
+#     data = exifdata.get(tag_id)
+#     # decode bytes 
+#     if isinstance(data, bytes):
+#         data = data.decode()
+#     info_dict[tag] = data
   
-  return info_dict
+#   return info_dict
