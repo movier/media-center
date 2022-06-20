@@ -96,3 +96,11 @@ def get_image_metadata(uri):
   return info_dict
 
 # get_image_metadata('/mnt/sda4/data/AI/20140904_212615.jpg')
+
+def get_image_dimensions(uri):
+  metadata = get_image_metadata(uri)
+  image_width = metadata.get('image_width')
+  image_height = metadata.get('image_height')
+  print(image_width, image_height)
+
+# get_image_dimensions('/mnt/sda4/data/AI/20140904_212533.jpg')
