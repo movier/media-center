@@ -45,7 +45,7 @@ def fini(aa, db, bb = None):
           creation_datetime = None
           if media_type == 1:
             meta_data = get_image_metadata(path)
-            creation_datetime = meta_data['datetime']
+            creation_datetime = meta_data.get('datetime')
           elif media_type == 2:
             creation_datetime = get_datetime(path)
           
