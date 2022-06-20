@@ -1,15 +1,19 @@
-# from datetime import datetime
-# from manage import db, Media
-# from utils import get_image_metadata 
+import os, sys
+currentdir = os.path.dirname(os.path.realpath(__file__))
+parentdir = os.path.dirname(currentdir)
+sys.path.append(parentdir)
 
-# for image in db.session.query(Media).filter(Media.media_type == 1).all():
-#   meta_data = get_image_metadata(image.uri)
-#   if not 'datetime' in meta_data:
-#     continue
-#   img_datetime = meta_data['datetime']
-#   img_datetime = img_datetime.replace('-', ':')
-#   img_datetime = datetime.strptime(img_datetime, '%Y:%m:%d %H:%M:%S')
-#   image.datetime = img_datetime
-#   db.session.add(image)
+from utils import get_media_dimensions
+from manage import db, Media
 
-# db.session.commit()
+for media in db.session.query(Media).all():
+  if media.width and media.height:
+    continue
+  dimensions = get_media_dimensions(media.uri, media.media_type)
+  width = dimensions.get('width')
+  height = dimensions.get('height')
+  media.width = width
+  media.height = height
+  db.session.add(media)
+
+db.session.commit()
