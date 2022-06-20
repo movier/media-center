@@ -4,7 +4,7 @@ from os.path import isfile, join, splitext, getmtime, getsize
 from datetime import datetime
 from update_duration_and_datetime import get_datetime, get_duration
 from manage import db, Media
-from utils import get_media_type, get_image_metadata
+from utils import get_media_type, get_image_metadata, get_media_dimensions
 
 def fini(aa, db, bb = None):
   list = []
@@ -60,6 +60,10 @@ def fini(aa, db, bb = None):
             media_datetime = mdatetime
 
           duration = get_duration(path)
+
+          media_dimensions = get_media_dimensions(path, media_type)
+          width = media_dimensions.get('width')
+          height = media_dimensions.get('height')
           
           list.append(dict(
             title=title,
@@ -71,6 +75,8 @@ def fini(aa, db, bb = None):
             datetime=media_datetime,
             duration=duration,
             filename=f,
+            width=width,
+            height=height,
           ))
 
           if _check_exist_function:
@@ -84,6 +90,8 @@ def fini(aa, db, bb = None):
               datetime=media_datetime,
               duration=duration,
               filename=f,
+              width=width,
+              height=height,
             )
             db.add(v)
       else:

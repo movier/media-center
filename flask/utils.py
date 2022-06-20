@@ -3,6 +3,7 @@ from os.path import isfile
 # from PIL import Image
 # from PIL.ExifTags import TAGS
 from exif import Image
+import ffmpeg
 
 # 0 for unknown, 1 for photo, 2 for video
 def get_media_type(filename):
@@ -99,8 +100,36 @@ def get_image_metadata(uri):
 
 def get_image_dimensions(uri):
   metadata = get_image_metadata(uri)
-  image_width = metadata.get('image_width')
-  image_height = metadata.get('image_height')
-  print(image_width, image_height)
+  # print('metadata', metadata)
+  image_width = metadata.get('pixel_x_dimension')
+  image_height = metadata.get('pixel_y_dimension')
+  return { 'width': image_width, 'height': image_height }
 
-# get_image_dimensions('/mnt/sda4/data/AI/20140904_212533.jpg')
+# print(get_image_dimensions('/mnt/sda4/data/AI/IMG_3919.jpg'))
+
+def get_video_metadata(uri):
+  all_metadata = ffmpeg.probe(uri)["streams"]
+  metadata = {}
+  for item in all_metadata:
+    for label in item:
+      metadata[label] = item.get(label)
+  return metadata
+
+# print(get_video_metadata('/mnt/sda4/data/AI/IMG_2825.mp4'))
+
+def get_video_dimensions(uri):
+  metadata = get_video_metadata(uri)
+  video_width = metadata.get('width')
+  video_height = metadata.get('height')
+  return { 'width': video_width, 'height': video_height }
+
+# print(get_video_dimensions('/mnt/sda4/data/AI/sample4.mp4'))
+
+def get_media_dimensions(uri, media_type):
+  if media_type == 1:
+    return get_image_dimensions(uri)
+  if media_type == 2:
+    return get_video_dimensions(uri)
+  return None
+
+# print(get_media_dimensions('/mnt/sda4/data/AI/IMG_2826.mp4', 2))
