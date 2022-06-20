@@ -35,6 +35,8 @@ resource_fields = {
   'datetime': fields.DateTime(dt_format='iso8601'),
   'duration': fields.Float,
   'media_type': fields.Integer,
+  'width': fields.Integer,
+  'height': fields.Integer,
 }
 cast_fields_res = {
   'id': fields.Integer,
