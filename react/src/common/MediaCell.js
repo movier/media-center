@@ -34,13 +34,13 @@ import { Link } from "react-router-dom";
 }
 
 export default function ({ media }) {
-  const { uri, poster_uri, title, id, people, created_at, size, datetime, duration, media_type} = media;
+  const { uri, poster_uri, title, id, people, created_at, size, datetime, duration, media_type, display_height, display_width } = media;
   const peopleNames = people.map(m => m.name).join(',');
   return (
     <div>
       <Link className="VideoList__link" to={`/watch?v=${uri}&id=${id}&cast=${peopleNames}`}>
         <div style={{ position: 'relative' }}>
-          <img className="media-cell-img" style={{ display: 'block', width: 'auto' }}  src={poster_uri} alt={title} />
+          <img className="media-cell-img" style={{ display: 'block', width: display_width, height: display_height }}  src={poster_uri} alt={title} />
           {media_type == 2 && <div style={{ display: 'flex', alignItems: 'center', position: 'absolute', top: 10, right: 10, color: 'white', fontSize: 12, fontWeight: 'bold' }}>{new Date(Math.ceil(duration) * 1000).toISOString().substr(11, 8)}
           <span style={{ marginLeft: 4 }} className="material-symbols-outlined">play_circle</span>
           </div>}
