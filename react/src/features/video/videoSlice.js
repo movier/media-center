@@ -11,7 +11,15 @@ export const videoSlice = createSlice({
       console.log('original data', originalData);
       const basicHeight = 250;
       const windowWidth = window.innerWidth;
-      const newData = originalData.slice();
+      const newData = originalData.map(m => {
+        if (!m.width ) {
+          m.width = 1000;
+        }
+        if (!m.height) {
+          m.height = 1000;
+        }
+        return m;
+      });
       let rowStartAt = 0;
       let rowEndAt = newData.length - 1;
       let rowWidth = 0;
