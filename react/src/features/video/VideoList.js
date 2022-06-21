@@ -39,10 +39,10 @@ export default function VideoList(props) {
 
   return (
     <div>
-      <div style={{ marginTop: 16, textAlign: 'center' }}>
+      {/* <div style={{ margin: 16, textAlign: 'center' }}>
         <button onClick={handleCheckUpdate}>检查更新</button>
         <Link to="/cast">Cast</Link>
-      </div>
+      </div> */}
       <div className="VideoList">
         {videoListData.map((value, index) => {
           return <MediaCell key={index} media={value} />;

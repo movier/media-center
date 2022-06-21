@@ -40,7 +40,7 @@ export default function ({ media }) {
     <div>
       <Link className="VideoList__link" to={`/watch?v=${uri}&id=${id}&cast=${peopleNames}`}>
         <div style={{ position: 'relative' }}>
-          <img src={poster_uri} alt={title} />
+          <img className="media-cell-img" style={{ display: 'block', width: 'auto' }}  src={poster_uri} alt={title} />
           {media_type == 2 && <div style={{ display: 'flex', alignItems: 'center', position: 'absolute', top: 10, right: 10, color: 'white', fontSize: 12, fontWeight: 'bold' }}>{new Date(Math.ceil(duration) * 1000).toISOString().substr(11, 8)}
           <span style={{ marginLeft: 4 }} className="material-symbols-outlined">play_circle</span>
           </div>}

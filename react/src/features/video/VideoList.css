@@ -1,9 +1,11 @@
 .VideoList {
-  margin: 16px 0;
-  display: grid;
+  /* margin: 16px 0; */
+  /* display: grid; */
   grid-template-columns: repeat(auto-fill, 200px);
-  grid-gap: 16px;
-  justify-content: center;
+  /* grid-gap: 16px; */
+  /* justify-content: center; */
+  display: flex;
+  flex-wrap: wrap;
 }
 .VideoList__link {
   text-decoration: none;
@@ -11,4 +13,7 @@
 .VideoList__title {
   color: white;
   text-decoration-color: white;
+}
+.media-cell-img {
+  height: 250px;
 }
