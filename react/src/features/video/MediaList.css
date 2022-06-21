@@ -1,4 +1,4 @@
-.VideoList {
+.MediaList {
   /* margin: 16px 0; */
   /* display: grid; */
   grid-template-columns: repeat(auto-fill, 200px);

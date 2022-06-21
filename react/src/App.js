@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-import VideoList from './features/video/VideoList';
+import MediaList from './features/video/MediaList';
 import MediaDetails from './features/video/MediaDetails';
 import RemainingTime from './RemainingTime';
 import CastList from './features/cast/CastList';
@@ -8,7 +8,7 @@ import CastList from './features/cast/CastList';
 function BasicExample() {
   return (
     <Router>
-      <Route exact path="/" component={VideoList} />
+      <Route exact path="/" component={MediaList} />
       <Route path="/watch" component={MediaDetails} />
       <Route path="/topics" component={Topics} />
       <Route path="/remaining-time" component={RemainingTime} />

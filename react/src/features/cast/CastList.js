@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-// import './VideoList.css';
+// import './MediaList.css';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   saveCastListData,
@@ -28,7 +28,7 @@ export default function CastList() {
         return (
           <div key={cast_index}>
             <div style={{ color: 'white' }}>{name}</div>
-            <div className="VideoList">
+            <div className="MediaList">
               {media.map((value, index) => {
                 return <MediaCell key={index} media={value} />;
               })}

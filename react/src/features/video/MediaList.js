@@ -4,11 +4,11 @@ import {
   saveVideoListData,
   selectVideoList,
  } from './videoSlice';
-import './VideoList.css';
+import './MediaList.css';
 import { Link } from "react-router-dom";
 import MediaCell from '../../common/MediaCell';
 
-export default function VideoList(props) {
+export default function MediaList(props) {
 
   const videoListData = useSelector(selectVideoList);
   const dispatch = useDispatch();
@@ -43,7 +43,7 @@ export default function VideoList(props) {
         <button onClick={handleCheckUpdate}>检查更新</button>
         <Link to="/cast">Cast</Link>
       </div> */}
-      <div className="VideoList">
+      <div className="MediaList">
         {videoListData.map((value, index) => {
           return <MediaCell key={index} media={value} />;
         })}
