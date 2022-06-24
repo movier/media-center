@@ -22,6 +22,16 @@ def generate_poster_for_video(video):
     stderr=subprocess.STDOUT,
   )
 
+def generate_thumbnail_for_video(video_uri, screenshot_time, poster_uri):
+  if not isfile(video_uri) or isfile(poster_uri):
+    return
+  subprocess.run(
+    ["ffmpeg", "-i", video_uri, "-ss", screenshot_time, "-vframes", "1", poster_uri],
+    stdout=subprocess.PIPE,
+    stderr=subprocess.STDOUT,
+  )
+# generate_thumbnail_for_video('/mnt/sda4/data/AI/IMG_2825.mp4', "5.287213", '/mnt/sda4/data/AI/IMG_2825_7.jpg')
+
 # def get_image_metadata(uri):
 #   image = Image.open(uri)
   
