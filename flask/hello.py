@@ -16,6 +16,7 @@ from math import floor
 from update_duration_and_datetime import get_datetime, get_duration
 from traverse_dir import fini
 from werkzeug.utils import secure_filename
+from utils import generate_thumbnail_for_video
 
 UPLOAD_FOLDER = '/mnt/sda4/data/AI'
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
@@ -282,6 +283,20 @@ class FFmpegController(Resource):
 
     return '', 201
 
+class ThumbnailController(Resource):
+  def post(self, media_id):
+    media = abort_if_video_doesnt_exist(media_id)
+    # return marshal(media, resource_fields), 200
+    parser = reqparse.RequestParser()
+    parser.add_argument('time')
+    args = parser.parse_args()
+    if not args['time']:
+      return 'No arg time', 400
+    screenshot_time = args['time']
+    generate_thumbnail_for_video(media.uri, screenshot_time, media.poster_uri)
+    return '', 200
+
+api.add_resource(ThumbnailController, '/thumbnail/<media_id>')
 api.add_resource(FFmpegController, '/ffmpeg')
 api.add_resource(MediaController, '/media/<media_id>')
 api.add_resource(ShotList, '/shots')
@@ -305,6 +320,25 @@ def upload_media():
     file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
     return '', 201
   return '', 500
+
+# @app.route('/generate_thumbnail/<media_id>')
+# def generate_thumbnail(media_id):
+#   media = abort_if_video_doesnt_exist(media_id)
+#   return marshal(media, resource_fields), 200
+  # # check if the post request has the file part
+  # if 'file' not in request.files:
+  #   # flash('No file part')
+  #   return 'No file part', 400 
+  # file = request.files['file']
+  # # if user does not select file, browser also
+  # # submit an empty part without filename
+  # if file.filename == '':
+  #   return 'No selected file', 400 
+  # if file and allowed_file(file.filename):
+  #   filename = secure_filename(file.filename)
+  #   file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+  #   return '', 201
+  # return '', 500
 
 @app.before_request
 def open_db_session():
