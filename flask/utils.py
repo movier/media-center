@@ -4,6 +4,7 @@ from os.path import isfile
 # from PIL.ExifTags import TAGS
 from exif import Image
 import ffmpeg
+import sys
 
 # 0 for unknown, 1 for photo, 2 for video
 def get_media_type(filename):
@@ -31,6 +32,20 @@ def generate_thumbnail_for_video(video_uri, screenshot_time, poster_uri):
     stderr=subprocess.STDOUT,
   )
 # generate_thumbnail_for_video('/mnt/sda4/data/AI/IMG_2825.mp4', "5.287213", '/mnt/sda4/data/AI/IMG_2825_7.jpg')
+
+def generate_thumbnail(in_filename, out_filename, time):
+  try:
+    (
+      ffmpeg
+      .input(in_filename, ss=time)
+      .output(out_filename, vframes=1)
+      .overwrite_output()
+      .run(capture_stdout=True, capture_stderr=True)
+    )
+  except ffmpeg.Error as e:
+    print(e.stderr.decode(), file=sys.stderr)
+    sys.exit(1)
+# generate_thumbnail('/mnt/sda4/data/AI/IMG_2825.mp4', '/mnt/sda4/data/AI/IMG_2825_27.jpg', "4.387213")
 
 # def get_image_metadata(uri):
 #   image = Image.open(uri)
