@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import '../../App.css';
 import { useDispatch } from 'react-redux';
 import { removeVideo } from './videoSlice';
@@ -15,6 +15,8 @@ export default function MediaDetails(props) {
   const [start, setStart] = useState('');
   const [end, setEnd] = useState('');
   const [mediaDetails, setMediaDetails] = useState(null);
+
+  const videoEle = useRef(null);
 
   useEffect(() => {
     fetch(`/api/media/${id}`)
@@ -83,7 +85,7 @@ export default function MediaDetails(props) {
         return <img className="media" src={media.uri} />;
       case 2:
         return (
-          <video className="media" controls autoPlay>
+          <video ref={videoEle} className="media" controls autoPlay>
             <source src={media.uri} />
           </video>
         );
@@ -97,7 +99,18 @@ export default function MediaDetails(props) {
   }
 
   function handleScreenshotButtonClicked() {
-    console.log('screenshot');
+    const screenshotTime = videoEle.current.currentTime;
+    fetch(`/api/thumbnail/${id}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ time: screenshotTime }),
+    }).then(() => {
+      window.alert('Screenshot success!'); 
+    }).catch(err => {
+      console.error(err);
+    });
   }
 
   if (!mediaDetails) return null;
