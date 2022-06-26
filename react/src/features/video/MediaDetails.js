@@ -96,6 +96,10 @@ export default function MediaDetails(props) {
     props.history.goBack();
   }
 
+  function handleScreenshotButtonClicked() {
+    console.log('screenshot');
+  }
+
   if (!mediaDetails) return null;
   return (
     <div className="media-container">
@@ -105,8 +109,13 @@ export default function MediaDetails(props) {
           <div className="icon-container" onClick={handleBackBtnClicked}>
             <span className="material-symbols-outlined">arrow_back</span>
           </div>
-          <div className="icon-container" onClick={handleDeleteButtonClicked}>
-            <span className="material-symbols-outlined">delete</span>
+          <div className="operation-container__inner__right">
+            <div className="icon-container" onClick={handleScreenshotButtonClicked}>
+              <span className="material-symbols-outlined">screenshot</span>
+            </div>
+            <div className="icon-container" onClick={handleDeleteButtonClicked}>
+              <span className="material-symbols-outlined">delete</span>
+            </div>
           </div>
         </div>
         {/* <div>

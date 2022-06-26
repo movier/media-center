@@ -30,6 +30,14 @@
   justify-content: space-between;
 }
 
+.operation-container__inner__right {
+  display: flex;
+}
+
 .icon-container {
   cursor: pointer;
+}
+
+.operation-container__inner__right .icon-container {
+  margin-left: 24px;
 }
