@@ -16,7 +16,7 @@ from math import floor
 from update_duration_and_datetime import get_datetime, get_duration
 from traverse_dir import fini
 from werkzeug.utils import secure_filename
-from utils import generate_thumbnail_for_video
+from utils import generate_thumbnail
 
 UPLOAD_FOLDER = '/mnt/sda4/data/AI'
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
@@ -293,7 +293,7 @@ class ThumbnailController(Resource):
     if not args['time']:
       return 'No arg time', 400
     screenshot_time = args['time']
-    generate_thumbnail_for_video(media.uri, screenshot_time, media.poster_uri)
+    generate_thumbnail(media.uri, media.poster_uri, screenshot_time)
     return '', 200
 
 api.add_resource(ThumbnailController, '/thumbnail/<media_id>')
