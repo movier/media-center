@@ -1,4 +1,4 @@
-import os, shutil
+import os, shutil, subprocess
 from datetime import datetime
 from flask import Flask, request, g, flash, redirect
 from flask_restful import Resource, Api, fields, reqparse, abort, marshal
@@ -7,16 +7,15 @@ from manage import Media, Shot, People, AndroidRelease
 from flask_cors import CORS
 from sqlalchemy import desc
 from os import listdir
-from os.path import isfile, join, splitext, getmtime
+from os.path import isfile, join, splitext, getmtime, getsize
 from datetime import datetime
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
-from sqlalchemy.ext.declarative import declarative_base
 from math import floor
 from update_duration_and_datetime import get_datetime, get_duration
 from traverse_dir import fini
 from werkzeug.utils import secure_filename
-from utils import generate_thumbnail
+from utils import generate_thumbnail, get_media_type, get_image_metadata, get_media_dimensions
 
 UPLOAD_FOLDER = '/mnt/sda4/data/AI'
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
@@ -281,8 +280,76 @@ class MediaList(Resource):
     if file.filename == '':
       return 'No selected file', 400 
     if file and allowed_file(file.filename):
-      filename = secure_filename(file.filename)
-      file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+      f = secure_filename(file.filename)
+      # print('f', f)
+      path = os.path.join(app.config['UPLOAD_FOLDER'], f)
+      file.save(path)
+
+      title, ext = splitext(f)
+      if f.lower().endswith(('.mp4', '.jpg', '.jpeg')) and not f.startswith("._"):
+        # print('true')
+        title = "".join(title)
+        # uri = path[len(mypath):]
+        root, ext1 = splitext(path)
+        poster_uri = "".join(root) + ".jpg"
+         
+        # An image could be a poster of a video
+        # if f.lower().endswith(('.jpg', '.jpeg')) and isfile("".join(root) + ".mp4"):
+        #   continue
+
+        # Generate thumbnail if necessary
+        if not isfile(poster_uri):
+          if ext == ".mp4":
+            subprocess.run(
+              ["ffmpeg", "-i", path, "-ss", "00:00:01.000", "-vframes", "1", poster_uri],
+              stdout=subprocess.PIPE,
+              stderr=subprocess.STDOUT,
+            )
+                
+        mtimestamp = getmtime(path)
+        mdatetime = datetime.fromtimestamp(mtimestamp)
+        file_size = getsize(path)
+
+        media_type = get_media_type(f)
+
+        creation_datetime = None
+        if media_type == 1:
+          meta_data = get_image_metadata(path)
+          creation_datetime = meta_data.get('datetime')
+        elif media_type == 2:
+          creation_datetime = get_datetime(path)
+          
+        media_datetime = None
+        if creation_datetime:
+          if media_type == 1:
+            media_datetime = datetime.strptime(creation_datetime, '%Y:%m:%d %H:%M:%S')
+          elif media_type == 2:
+            media_datetime = datetime.strptime(creation_datetime, '%Y-%m-%dT%H:%M:%S.%fZ')
+        else:
+          media_datetime = mdatetime
+
+        duration = get_duration(path)
+
+        media_dimensions = get_media_dimensions(path, media_type)
+        width = media_dimensions.get('width')
+        height = media_dimensions.get('height')
+          
+        v = Media(
+          title=title,
+          uri=path,
+          poster_uri=poster_uri,
+          created_at=mdatetime,
+          media_type=media_type,
+          size=file_size,
+          datetime=media_datetime,
+          duration=duration,
+          filename=f,
+          width=width,
+          height=height,
+        )
+        g.db.add(v)
+        g.db.commit()
+
       return '', 201
     return '', 500
 
