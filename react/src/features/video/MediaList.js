@@ -40,8 +40,9 @@ export default function MediaList(props) {
   return (
     <div>
       <div style={{ margin: 16, textAlign: 'center' }}>
-        <button onClick={handleCheckUpdate}>检查更新</button>
-        <Link to="/cast">Cast</Link>
+        <span style={{ cursor: 'pointer' }} className="material-symbols-outlined">file_upload</span>
+        <span style={{ margin: '0 20px', cursor: 'pointer' }} className="material-symbols-outlined" onClick={handleCheckUpdate}>sync</span>
+        <Link to="/cast"><span style={{ color: 'white' }}  className="material-symbols-outlined">familiar_face_and_zone</span></Link>
       </div>
       <div className="MediaList">
         {videoListData.map((value, index) => {
