@@ -7,6 +7,7 @@ import {
 import './MediaList.css';
 import { Link } from "react-router-dom";
 import MediaCell from '../../common/MediaCell';
+import axios from 'axios';
 
 export default function MediaList(props) {
 
@@ -44,13 +45,8 @@ export default function MediaList(props) {
 
   function onFileUpload() {
     const formData = new FormData();
-    formData.append(
-      "myFile",
-      selectedFile,
-      selectedFile.name
-    );
-    // Send formData object
-    // axios.post("api/uploadfile", formData);
+    formData.append("file", selectedFile);
+    axios.post("api/media", formData);
   };
 
   return (
