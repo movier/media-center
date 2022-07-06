@@ -274,84 +274,84 @@ class MediaList(Resource):
     if 'file' not in request.files:
       # flash('No file part')
       return 'No file part', 400 
-    file = request.files['file']
+    upload_files = request.files.getlist('file')
     # if user does not select file, browser also
     # submit an empty part without filename
-    if file.filename == '':
-      return 'No selected file', 400 
-    if file and allowed_file(file.filename):
-      f = secure_filename(file.filename)
-      # print('f', f)
-      path = os.path.join(app.config['UPLOAD_FOLDER'], f)
-      file.save(path)
+    if not upload_files:
+      return 'No selected file', 400
+    
+    for file in upload_files:
+      if file and allowed_file(file.filename):
+        f = secure_filename(file.filename)
+        # print('f', f)
+        path = os.path.join(app.config['UPLOAD_FOLDER'], f)
+        file.save(path)
 
-      title, ext = splitext(f)
-      if f.lower().endswith(('.mp4', '.jpg', '.jpeg')) and not f.startswith("._"):
-        # print('true')
-        title = "".join(title)
-        # uri = path[len(mypath):]
-        root, ext1 = splitext(path)
-        poster_uri = "".join(root) + ".jpg"
-         
-        # An image could be a poster of a video
-        # if f.lower().endswith(('.jpg', '.jpeg')) and isfile("".join(root) + ".mp4"):
-        #   continue
-
-        # Generate thumbnail if necessary
-        if not isfile(poster_uri):
-          if ext == ".mp4":
-            subprocess.run(
-              ["ffmpeg", "-i", path, "-ss", "00:00:01.000", "-vframes", "1", poster_uri],
-              stdout=subprocess.PIPE,
-              stderr=subprocess.STDOUT,
-            )
-                
-        mtimestamp = getmtime(path)
-        mdatetime = datetime.fromtimestamp(mtimestamp)
-        file_size = getsize(path)
-
-        media_type = get_media_type(f)
-
-        creation_datetime = None
-        if media_type == 1:
-          meta_data = get_image_metadata(path)
-          creation_datetime = meta_data.get('datetime')
-        elif media_type == 2:
-          creation_datetime = get_datetime(path)
+        title, ext = splitext(f)
+        if f.lower().endswith(('.mp4', '.jpg', '.jpeg')) and not f.startswith("._"):
+          # print('true')
+          title = "".join(title)
+          # uri = path[len(mypath):]
+          root, ext1 = splitext(path)
+          poster_uri = "".join(root) + ".jpg"
           
-        media_datetime = None
-        if creation_datetime:
+          # An image could be a poster of a video
+          # if f.lower().endswith(('.jpg', '.jpeg')) and isfile("".join(root) + ".mp4"):
+          #   continue
+
+          # Generate thumbnail if necessary
+          if not isfile(poster_uri):
+            if ext == ".mp4":
+              subprocess.run(
+                ["ffmpeg", "-i", path, "-ss", "00:00:01.000", "-vframes", "1", poster_uri],
+                stdout=subprocess.PIPE,
+                stderr=subprocess.STDOUT,
+              )
+                  
+          mtimestamp = getmtime(path)
+          mdatetime = datetime.fromtimestamp(mtimestamp)
+          file_size = getsize(path)
+
+          media_type = get_media_type(f)
+
+          creation_datetime = None
           if media_type == 1:
-            media_datetime = datetime.strptime(creation_datetime, '%Y:%m:%d %H:%M:%S')
+            meta_data = get_image_metadata(path)
+            creation_datetime = meta_data.get('datetime')
           elif media_type == 2:
-            media_datetime = datetime.strptime(creation_datetime, '%Y-%m-%dT%H:%M:%S.%fZ')
-        else:
-          media_datetime = mdatetime
+            creation_datetime = get_datetime(path)
+            
+          media_datetime = None
+          if creation_datetime:
+            if media_type == 1:
+              media_datetime = datetime.strptime(creation_datetime, '%Y:%m:%d %H:%M:%S')
+            elif media_type == 2:
+              media_datetime = datetime.strptime(creation_datetime, '%Y-%m-%dT%H:%M:%S.%fZ')
+          else:
+            media_datetime = mdatetime
 
-        duration = get_duration(path)
+          duration = get_duration(path)
 
-        media_dimensions = get_media_dimensions(path, media_type)
-        width = media_dimensions.get('width')
-        height = media_dimensions.get('height')
-          
-        v = Media(
-          title=title,
-          uri=path,
-          poster_uri=poster_uri,
-          created_at=mdatetime,
-          media_type=media_type,
-          size=file_size,
-          datetime=media_datetime,
-          duration=duration,
-          filename=f,
-          width=width,
-          height=height,
-        )
-        g.db.add(v)
-        g.db.commit()
-
-      return '', 201
-    return '', 500
+          media_dimensions = get_media_dimensions(path, media_type)
+          width = media_dimensions.get('width')
+          height = media_dimensions.get('height')
+            
+          v = Media(
+            title=title,
+            uri=path,
+            poster_uri=poster_uri,
+            created_at=mdatetime,
+            media_type=media_type,
+            size=file_size,
+            datetime=media_datetime,
+            duration=duration,
+            filename=f,
+            width=width,
+            height=height,
+          )
+          g.db.add(v)
+          g.db.commit()
+    return '', 201 
 
 api.add_resource(MediaList, '/media')
 api.add_resource(ThumbnailController, '/thumbnail/<media_id>')
