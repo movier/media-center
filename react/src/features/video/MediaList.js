@@ -13,7 +13,7 @@ export default function MediaList(props) {
 
   const videoListData = useSelector(selectVideoList);
   const dispatch = useDispatch();
-  const [selectedFile, setSelectedFile] = useState(null);
+  const [selectedFile, setSelectedFile] = useState([]);
 
   useEffect(() => {
     if (videoListData.length > 0) return;
@@ -40,19 +40,21 @@ export default function MediaList(props) {
   }
 
   const onFileChange = event => {
-    setSelectedFile(event.target.files[0]);
+    setSelectedFile([...event.target.files]);
   };
 
   function onFileUpload() {
     const formData = new FormData();
-    formData.append("file", selectedFile);
+    selectedFile.forEach(file => {
+      formData.append("file", file); 
+    });
     axios.post("api/media", formData);
   };
 
   return (
     <div>
       <div style={{ margin: 16, textAlign: 'center' }}>
-        <input type="file" onChange={onFileChange} />
+        <input type="file" onChange={onFileChange} multiple />
         <span style={{ cursor: 'pointer' }} className="material-symbols-outlined" onClick={onFileUpload}>file_upload</span>
         <span style={{ margin: '0 20px', cursor: 'pointer' }} className="material-symbols-outlined" onClick={handleCheckUpdate}>sync</span>
         <Link to="/cast"><span style={{ color: 'white' }}  className="material-symbols-outlined">familiar_face_and_zone</span></Link>
