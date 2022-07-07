@@ -18,7 +18,7 @@ from werkzeug.utils import secure_filename
 from utils import generate_thumbnail, get_media_type, get_image_metadata, get_media_dimensions
 
 UPLOAD_FOLDER = '/mnt/sda4/data/AI'
-ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'mp4', 'mov'}
 
 app = Flask(__name__)
 app.config['MAX_CONTENT_LENGTH'] = 1 * 1024 * 1024 * 1024 # 1GB
