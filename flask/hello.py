@@ -282,8 +282,8 @@ class MediaList(Resource):
     
     for file in upload_files:
       if file and allowed_file(file.filename):
-        f = secure_filename(file.filename)
-        # print('f', f)
+        # f = secure_filename(file.filename)
+        f = file.filename
         path = os.path.join(app.config['UPLOAD_FOLDER'], f)
         file.save(path)
 
