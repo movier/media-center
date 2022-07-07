@@ -15,8 +15,7 @@ export default function MediaList(props) {
   const dispatch = useDispatch();
   const [selectedFile, setSelectedFile] = useState([]);
 
-  useEffect(() => {
-    if (videoListData.length > 0) return;
+  function loadData() {
     fetch('/api')
       .then(response => response.json())
       .then(data => {
@@ -29,6 +28,11 @@ export default function MediaList(props) {
           dispatch(saveVideoListData(data));
         }
       });
+  }
+
+  useEffect(() => {
+    if (videoListData.length > 0) return;
+    loadData(); 
   }, []);
 
   const handleCheckUpdate = () => {
@@ -43,12 +47,13 @@ export default function MediaList(props) {
     setSelectedFile([...event.target.files]);
   };
 
-  function onFileUpload() {
+  async function onFileUpload() {
     const formData = new FormData();
     selectedFile.forEach(file => {
       formData.append("file", file); 
     });
-    axios.post("api/media", formData);
+    await axios.post("api/media", formData);
+    loadData();
   };
 
   return (
