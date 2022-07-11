@@ -303,7 +303,7 @@ class MediaList(Resource):
           if not isfile(poster_uri):
             if ext == ".mp4":
               subprocess.run(
-                ["ffmpeg", "-i", path, "-ss", "00:00:01.000", "-vframes", "1", poster_uri],
+                ["ffmpeg", "-i", path, "-ss", "00:00:00.001", "-vframes", "1", poster_uri],
                 stdout=subprocess.PIPE,
                 stderr=subprocess.STDOUT,
               )
