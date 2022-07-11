@@ -52,7 +52,10 @@ export default function MediaList(props) {
     selectedFile.forEach(file => {
       formData.append("file", file); 
     });
-    await axios.post("api/media", formData);
+    const config = {
+      onUploadProgress: progressEvent => console.log(progressEvent.loaded)
+    };
+    await axios.post("api/media", formData, config);
     loadData();
   };
 
