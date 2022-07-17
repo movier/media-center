@@ -67,9 +67,16 @@ export default function MediaList(props) {
         <span style={{ margin: '0 20px', cursor: 'pointer' }} className="material-symbols-outlined" onClick={handleCheckUpdate}>sync</span>
         <Link to="/cast"><span style={{ color: 'white' }}  className="material-symbols-outlined">familiar_face_and_zone</span></Link>
       </div>
-      <div className="MediaList">
-        {videoListData.map((value, index) => {
-          return <MediaCell key={index} media={value} />;
+      <div>
+        {videoListData.map(m => {
+          return (
+            <div key={m.datetime}>
+              <div>{m.datetime}</div>
+              <div className="MediaList">
+                {m.data.map(n => <MediaCell key={n.id} media={n} />)}
+              </div>
+            </div>
+          );
         })}
       </div>
     </div>

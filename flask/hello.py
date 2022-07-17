@@ -151,7 +151,7 @@ class HelloWorld(Resource):
     args = parser.parse_args()
     if args['is_check']:
       fini(g.path, g.db, True)
-    result = g.db.query(Media).order_by(desc(Media.created_at)).all()
+    result = g.db.query(Media).order_by(desc(Media.datetime)).all()
     return marshal(result, resource_fields), 200
 
 def abort_if_video_doesnt_exist(media_id):
