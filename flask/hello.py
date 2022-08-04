@@ -21,7 +21,7 @@ UPLOAD_FOLDER = '/mnt/sda4/data/AI'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'mp4', 'mov'}
 
 app = Flask(__name__)
-app.config['MAX_CONTENT_LENGTH'] = 1 * 1024 * 1024 * 1024 # 1GB
+app.config['MAX_CONTENT_LENGTH'] = 10 * 1024 * 1024 * 1024 # 10GB, same as Nginx configuration
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 def allowed_file(filename):
