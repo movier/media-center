@@ -73,6 +73,9 @@ export const videoSlice = createSlice({
               rowWidth = width;
               totalRatio = ratio;
             }
+          } else {
+            element.display_height = basicHeight;
+            element.display_width = 'auto';
           }
         }
         element.data = newData;
