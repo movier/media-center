@@ -1,0 +1,13 @@
+FROM python:3.6
+
+RUN apt update
+RUN apt install -y ffmpeg
+
+WORKDIR /mnt/sda4/jffs/my-video-app/flask
+
+COPY requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY . .
+
+CMD /mnt/sda4/jffs/my-video-app/flask/my-video-app-api.fcgi &

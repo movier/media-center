@@ -1,0 +1,24 @@
+version: "3.7"
+services:
+  backend:
+    build: ./flask
+    dockerfile: Dockerfile.production
+    container_name: my-running-flask-app-prod
+    ports:
+      - "8003:5000"
+    volumes:
+      - "./flask:/mnt/sda4/jffs/my-video-app/flask"
+      - "./static/adults:/mnt/sda4/data/AI"
+      - "./static/kids:/mnt/sda4/data/kids"
+  nginx: 
+    image: nginx:latest
+    container_name: production_nginx-prod
+    volumes:
+      - "./nginx.prod.conf:/etc/nginx/nginx.conf"
+      - "/home/olimovier/AI:/mnt/sda4/data/AI"
+      - "./static/kids:/mnt/sda4/data/kids"
+    ports:
+      - "7000:7000"
+      - "7001:7001"
+    depends_on:
+      - backend
