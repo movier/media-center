@@ -5,9 +5,8 @@ RUN apt install -y ffmpeg
 
 WORKDIR /mnt/sda4/jffs/my-video-app/flask
 
-COPY requirements.txt ./
+COPY ./requirements.txt /mnt/sda4/jffs/my-video-app/flask/requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install gunicorn
 
-COPY . .
-
-CMD /mnt/sda4/jffs/my-video-app/flask/my-video-app-api.fcgi &
+COPY . /mnt/sda4/jffs/my-video-app/flask/

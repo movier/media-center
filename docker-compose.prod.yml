@@ -1,24 +1,24 @@
 version: "3.7"
 services:
   backend:
-    build: ./flask
-    dockerfile: Dockerfile.production
-    container_name: my-running-flask-app-prod
-    ports:
-      - "8003:5000"
+    build:
+      context: ./flask
+      dockerfile: Dockerfile.prod
+    command: gunicorn --bind 0.0.0.0:5000 hello:app
     volumes:
-      - "./flask:/mnt/sda4/jffs/my-video-app/flask"
       - "./static/adults:/mnt/sda4/data/AI"
       - "./static/kids:/mnt/sda4/data/kids"
+    expose:
+      - 5000
   nginx: 
     image: nginx:latest
-    container_name: production_nginx-prod
     volumes:
+      - "./react/build:/mnt/sda4/jffs/my-video-app/react/build"
       - "./nginx.prod.conf:/etc/nginx/nginx.conf"
-      - "/home/olimovier/AI:/mnt/sda4/data/AI"
+      - "./static/AI:/mnt/sda4/data/AI"
       - "./static/kids:/mnt/sda4/data/kids"
     ports:
       - "7000:7000"
-      - "7001:7001"
+      - "9001:9001"
     depends_on:
       - backend
