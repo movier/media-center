@@ -6,19 +6,21 @@ services:
       dockerfile: Dockerfile.prod
     command: gunicorn --bind 0.0.0.0:5000 hello:app
     volumes:
+      - "./flask/test.db:/mnt/sda4/jffs/my-video-app/flask/test.db"
+      - "./flask/kids.db:/mnt/sda4/jffs/my-video-app/flask/kids.db"
       - "./static/adults:/mnt/sda4/data/AI"
       - "./static/kids:/mnt/sda4/data/kids"
     expose:
       - 5000
-  nginx: 
+  nginx:
     image: nginx:latest
     volumes:
       - "./react/build:/mnt/sda4/jffs/my-video-app/react/build"
       - "./nginx.prod.conf:/etc/nginx/nginx.conf"
-      - "./static/AI:/mnt/sda4/data/AI"
+      - "./static/adults:/mnt/sda4/data/AI"
       - "./static/kids:/mnt/sda4/data/kids"
     ports:
       - "7000:7000"
-      - "9001:9001"
+      - "7001:7001"
     depends_on:
       - backend
