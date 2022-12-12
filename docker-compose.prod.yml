@@ -5,20 +5,22 @@ services:
       context: ./flask
       dockerfile: Dockerfile.prod
     command: gunicorn --bind 0.0.0.0:5000 hello:app
+    container_name: media-center-backend-production
     volumes:
-      - "./flask/test.db:/mnt/sda4/jffs/my-video-app/flask/test.db"
-      - "./flask/kids.db:/mnt/sda4/jffs/my-video-app/flask/kids.db"
-      - "./static/adults:/mnt/sda4/data/AI"
-      - "./static/kids:/mnt/sda4/data/kids"
+      - "./flask/test-prod.db:/mnt/sda4/jffs/my-video-app/flask/test.db"
+      - "./flask/kids-prod.db:/mnt/sda4/jffs/my-video-app/flask/kids.db"
+      - "./static/adults-prod:/mnt/sda4/data/AI"
+      - "./static/kids-prod:/mnt/sda4/data/kids"
     expose:
       - 5000
   nginx:
     image: nginx:latest
+    container_name: media-center-nginx-production
     volumes:
       - "./react/build:/mnt/sda4/jffs/my-video-app/react/build"
       - "./nginx.prod.conf:/etc/nginx/nginx.conf"
-      - "./static/adults:/mnt/sda4/data/AI"
-      - "./static/kids:/mnt/sda4/data/kids"
+      - "./static/adults-prod:/mnt/sda4/data/AI"
+      - "./static/kids-prod:/mnt/sda4/data/kids"
     ports:
       - "7000:7000"
       - "7001:7001"
