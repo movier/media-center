@@ -7,7 +7,7 @@ services:
       - "8003:5000"
     volumes:
       - "./flask:/mnt/sda4/jffs/my-video-app/flask"
-      - "./static/AI:/mnt/sda4/data/AI"
+      - "./static/adults:/mnt/sda4/data/AI"
       - "./static/kids:/mnt/sda4/data/kids"
   frontend:
     build: ./react
@@ -22,7 +22,7 @@ services:
     container_name: production_nginx
     volumes:
       - "./nginx.dev.conf:/etc/nginx/nginx.conf"
-      - "./static/AI:/mnt/sda4/data/AI"
+      - "./static/adults:/mnt/sda4/data/AI"
       - "./static/kids:/mnt/sda4/data/kids"
     ports:
       - "9000:9000"

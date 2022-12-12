@@ -9,8 +9,8 @@ services:
     volumes:
       - "./flask/test-prod.db:/mnt/sda4/jffs/my-video-app/flask/test.db"
       - "./flask/kids-prod.db:/mnt/sda4/jffs/my-video-app/flask/kids.db"
-      - "./static/adults-prod:/mnt/sda4/data/AI"
-      - "./static/kids-prod:/mnt/sda4/data/kids"
+      - "/mnt/AI:/mnt/sda4/data/AI"
+      - "/mnt/kids:/mnt/sda4/data/kids"
     expose:
       - 5000
   nginx:
@@ -19,8 +19,8 @@ services:
     volumes:
       - "./react/build:/mnt/sda4/jffs/my-video-app/react/build"
       - "./nginx.prod.conf:/etc/nginx/nginx.conf"
-      - "./static/adults-prod:/mnt/sda4/data/AI"
-      - "./static/kids-prod:/mnt/sda4/data/kids"
+      - "/mnt/AI:/mnt/sda4/data/AI"
+      - "/mnt/kids:/mnt/sda4/data/kids"
     ports:
       - "7000:7000"
       - "7001:7001"
