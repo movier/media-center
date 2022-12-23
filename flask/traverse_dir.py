@@ -17,19 +17,19 @@ def fini(aa, db, bb = None):
       path = join(base_path, f)
       if isfile(path):
         title, ext = splitext(f)
-        if f.lower().endswith(('.mp4', '.jpg', '.jpeg')) and not f.startswith("._"):
+        if f.lower().endswith(('.mkv', '.mp4', '.jpg', '.jpeg')) and not f.startswith("._"):
           title = "".join(title)
           # uri = path[len(mypath):]
           root, ext1 = splitext(path)
           poster_uri = "".join(root) + ".jpg"
                 
           # An image could be a poster of a video
-          if f.lower().endswith(('.jpg', '.jpeg')) and isfile("".join(root) + ".mp4"):
+          if f.lower().endswith(('.jpg', '.jpeg')) and (isfile("".join(root) + ".mp4") or isfile("".join(root) + ".mkv")):
             continue
 
           # Generate thumbnail if necessary
           if not isfile(poster_uri):
-            if ext == ".mp4":
+            if ext == ".mp4" or ext == ".mkv":
               subprocess.run(
                 ["ffmpeg", "-i", path, "-ss", "00:00:01.000", "-vframes", "1", poster_uri],
                 stdout=subprocess.PIPE,

@@ -10,7 +10,7 @@ import sys
 def get_media_type(filename):
   if filename.lower().endswith(('.jpg', '.jpeg', 'png')):
     return 1
-  if filename.lower().endswith(('.mp4', '.mov')):
+  if filename.lower().endswith(('mkv', '.mp4', '.mov')):
     return 2
   return 0
 
